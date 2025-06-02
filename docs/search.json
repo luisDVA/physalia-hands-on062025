@@ -767,14 +767,14 @@
     "href": "slides/preparation.html#operating-on-multiple-columns",
     "title": "Data preparation",
     "section": "Operating on multiple columns",
-    "text": "Operating on multiple columns\nacross()\nfilter or mutate multiple columns simultaneously\n\nBy position (not recommended), name, or type\nCompound selections of columns\n(e.g. factor columns that contain “month” in their name)"
+    "text": "Operating on multiple columns\nacross()\nselect, filter or mutate multiple columns simultaneously\n\nBy position (not recommended), name, or type\nCompound selections of columns\n(e.g. numeric columns that contain “precip” in their name)"
   },
   {
     "objectID": "slides/preparation.html#across-arguments",
     "href": "slides/preparation.html#across-arguments",
     "title": "Data preparation",
     "section": "across() arguments:",
-    "text": "across() arguments:\n.cols Columns to transform\n.fns Function to apply to each of the selected columns\n\nExpects a function, so function name and arguments can be passed separately (new preference is for anonymous functions, which we will cover later)"
+    "text": "across() arguments:\n\n.cols Columns to transform\n.fns Function to apply to each of the selected columns"
   },
   {
     "objectID": "slides/preparation.html#useful-column-selection-helpers",
@@ -794,8 +794,8 @@
     "objectID": "slides/preparation.html#section-11",
     "href": "slides/preparation.html#section-11",
     "title": "Data preparation",
-    "section": "!",
-    "text": "!\nTake the complement of a set of variables (negate a selection)\n\n\nmcountries %&gt;% \n  select(!c(region,threatened)) %&gt;% head()\n\n# A tibble: 6 × 2\n  cntry     species\n  &lt;chr&gt;       &lt;int&gt;\n1 Indonesia     670\n2 Brasil        648\n3 China         551\n4 Mexico        523\n5 Peru          467\n6 Congo         430"
+    "section": "",
+    "text": "mcountries %&gt;% \n  mutate(across(c(species, threatened), log)) %&gt;% \n  head(3)\n\n# A tibble: 3 × 4\n  cntry     species threatened region \n  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  \n1 Indonesia    6.51       5.25 Asia   \n2 Brasil       6.47       4.38 America\n3 China        6.31       4.29 Asia   \n\n\n\n\n.cols is a vector with the names of the columns we’re interested in\nlog is the function to apply"
   },
   {
     "objectID": "slides/preparation.html#where",
@@ -815,15 +815,15 @@
     "objectID": "slides/preparation.html#section-12",
     "href": "slides/preparation.html#section-12",
     "title": "Data preparation",
-    "section": ":",
-    "text": ":\nSelect a range of consecutive variables\n\n\nmcountries %&gt;% \n  select(cntry:threatened) %&gt;% head()\n\n# A tibble: 6 × 3\n  cntry     species threatened\n  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;\n1 Indonesia     670        191\n2 Brasil        648         80\n3 China         551         73\n4 Mexico        523         96\n5 Peru          467         53\n6 Congo         430         15"
+    "section": "",
+    "text": "Wide Data\nHuman-readable\nEasier entry\nEasier interactive editing\n\nLong Data\nOften meets Tidy Data principles\nAnalysis-ready\nMaps well to plot axes and aesthetics"
   },
   {
     "objectID": "slides/preparation.html#section-13",
     "href": "slides/preparation.html#section-13",
     "title": "Data preparation",
-    "section": "-",
-    "text": "-\nExclude variables\n(return all elements except the one preceded by the subtraction operator)\n\n\nmcountries %&gt;% \n  select(-region) %&gt;% head(3)\n\n# A tibble: 3 × 3\n  cntry     species threatened\n  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;\n1 Indonesia     670        191\n2 Brasil        648         80\n3 China         551         73"
+    "section": "",
+    "text": "dining optionsData\n\n\n\n\n\n\n\n\n\n\narea_type\ndistrict\ncoffee_shops\nfast_food\nfish_chips\n\n\n\n\nResidential\nSouth\n2\n3\n1\n\n\nCommercial\nNorth\n12\n6\n4\n\n\nSuburban\nSouth\n2\n4\n3\n\n\nRural\nEast\n0\n2\n0\n\n\n\n\n\n\n\n\n\n\ndining &lt;- \ntibble::tribble(\n     ~area_type, ~district, ~coffee_shops, ~fast_food, ~fish_chips,\n  \"Residential\",   \"South\",            2L,         3L,          1L,\n   \"Commercial\",   \"North\",           12L,         6L,          4L,\n     \"Suburban\",   \"South\",            2L,         4L,          3L,\n        \"Rural\",    \"East\",            0L,         2L,          0L\n  )\n\n\n\n\nVariables:\narea type, district, and what else?"
   },
   {
     "objectID": "slides/preparation.html#no-helpers-multiple-variables",
@@ -851,7 +851,7 @@
     "href": "slides/preparation.html#section-14",
     "title": "Data preparation",
     "section": "",
-    "text": "Wide Data\nHuman-readable\nEasier entry\nEasier interactive editing\n\nLong Data\nOften meets Tidy Data principles\nAnalysis-ready\nMaps well to plot axes and aesthetics"
+    "text": "dining %&gt;%\n  pivot_longer(\n    cols = c(coffee_shops, fast_food, fish_chips),\n    names_to = \"restaurant_type\",\n    values_to = \"n_restaurants\")"
   },
   {
     "objectID": "slides/preparation.html#reshaping-data-with-tidyr",
@@ -865,7 +865,7 @@
     "href": "slides/preparation.html#section-15",
     "title": "Data preparation",
     "section": "",
-    "text": "dining optionsData\n\n\n\n\n\n\n\n\n\n\narea_type\ndistrict\ncoffee_shops\nfast_food\nfish_chips\n\n\n\n\nResidential\nSouth\n2\n3\n1\n\n\nCommercial\nNorth\n12\n6\n4\n\n\nSuburban\nSouth\n2\n4\n3\n\n\nRural\nEast\n0\n2\n0\n\n\n\n\n\n\n\n\n\n\ndining &lt;- \ntibble::tribble(\n     ~area_type, ~district, ~coffee_shops, ~fast_food, ~fish_chips,\n  \"Residential\",   \"South\",            2L,         3L,          1L,\n   \"Commercial\",   \"North\",           12L,         6L,          4L,\n     \"Suburban\",   \"South\",            2L,         4L,          3L,\n        \"Rural\",    \"East\",            0L,         2L,          0L\n  )\n\n\n\n\nVariables:\narea type, district, and what else?"
+    "text": "dining %&gt;%\n  pivot_longer(\n    cols = c(coffee_shops, fast_food, fish_chips),\n    names_to = \"restaurant_type\",\n    values_to = \"n_restaurants\")\n\n# A tibble: 12 × 4\n   area_type   district restaurant_type n_restaurants\n   &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;                   &lt;int&gt;\n 1 Residential South    coffee_shops                2\n 2 Residential South    fast_food                   3\n 3 Residential South    fish_chips                  1\n 4 Commercial  North    coffee_shops               12\n 5 Commercial  North    fast_food                   6\n 6 Commercial  North    fish_chips                  4\n 7 Suburban    South    coffee_shops                2\n 8 Suburban    South    fast_food                   4\n 9 Suburban    South    fish_chips                  3\n10 Rural       East     coffee_shops                0\n11 Rural       East     fast_food                   2\n12 Rural       East     fish_chips                  0"
   },
   {
     "objectID": "slides/preparation.html#wide-to-long",
@@ -879,14 +879,14 @@
     "href": "slides/preparation.html#section-16",
     "title": "Data preparation",
     "section": "",
-    "text": "dining %&gt;%\n  pivot_longer(\n    cols = c(coffee_shops, fast_food, fish_chips),\n    names_to = \"restaurant_type\",\n    values_to = \"n_restaurants\")"
+    "text": "dining_long %&gt;% \n  pivot_wider(names_from = restaurant_type, \n              values_from = n_restaurants)\n\n# A tibble: 4 × 5\n  area_type   district coffee_shops fast_food fish_chips\n  &lt;chr&gt;       &lt;chr&gt;           &lt;int&gt;     &lt;int&gt;      &lt;int&gt;\n1 Residential South               2         3          1\n2 Commercial  North              12         6          4\n3 Suburban    South               2         4          3\n4 Rural       East                0         2          0"
   },
   {
     "objectID": "slides/preparation.html#section-17",
     "href": "slides/preparation.html#section-17",
     "title": "Data preparation",
     "section": "",
-    "text": "dining %&gt;%\n  pivot_longer(\n    cols = c(coffee_shops, fast_food, fish_chips),\n    names_to = \"restaurant_type\",\n    values_to = \"n_restaurants\")\n\n# A tibble: 12 × 4\n   area_type   district restaurant_type n_restaurants\n   &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;                   &lt;int&gt;\n 1 Residential South    coffee_shops                2\n 2 Residential South    fast_food                   3\n 3 Residential South    fish_chips                  1\n 4 Commercial  North    coffee_shops               12\n 5 Commercial  North    fast_food                   6\n 6 Commercial  North    fish_chips                  4\n 7 Suburban    South    coffee_shops                2\n 8 Suburban    South    fast_food                   4\n 9 Suburban    South    fish_chips                  3\n10 Rural       East     coffee_shops                0\n11 Rural       East     fast_food                   2\n12 Rural       East     fish_chips                  0"
+    "text": "dining %&gt;%\n  pivot_longer(\n    cols = c(coffee_shops, fast_food, fish_chips),\n    names_to = \"restaurant_type\",\n    values_to = \"n_restaurants\")"
   },
   {
     "objectID": "slides/preparation.html#long-to-wide",
@@ -900,7 +900,7 @@
     "href": "slides/preparation.html#section-18",
     "title": "Data preparation",
     "section": "",
-    "text": "dining_long %&gt;% \n  pivot_wider(names_from = restaurant_type, \n              values_from = n_restaurants)\n\n# A tibble: 4 × 5\n  area_type   district coffee_shops fast_food fish_chips\n  &lt;chr&gt;       &lt;chr&gt;           &lt;int&gt;     &lt;int&gt;      &lt;int&gt;\n1 Residential South               2         3          1\n2 Commercial  North              12         6          4\n3 Suburban    South               2         4          3\n4 Rural       East                0         2          0"
+    "text": "dining %&gt;%\n  pivot_longer(\n    cols = c(coffee_shops, fast_food, fish_chips),\n    names_to = \"restaurant_type\",\n    values_to = \"n_restaurants\")\n\n# A tibble: 12 × 4\n   area_type   district restaurant_type n_restaurants\n   &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;                   &lt;int&gt;\n 1 Residential South    coffee_shops                2\n 2 Residential South    fast_food                   3\n 3 Residential South    fish_chips                  1\n 4 Commercial  North    coffee_shops               12\n 5 Commercial  North    fast_food                   6\n 6 Commercial  North    fish_chips                  4\n 7 Suburban    South    coffee_shops                2\n 8 Suburban    South    fast_food                   4\n 9 Suburban    South    fish_chips                  3\n10 Rural       East     coffee_shops                0\n11 Rural       East     fast_food                   2\n12 Rural       East     fish_chips                  0"
   },
   {
     "objectID": "slides/preparation.html#practice---pivoting",
@@ -1306,7 +1306,7 @@
     "href": "slides/programming.html#practice",
     "title": "Programming and reproducibility",
     "section": "Practice",
-    "text": "Practice\nWrite a for loop to print every letter in the alphabet in lowercase and in reverse alphabetical order (e.g. z,y,x,w…) \nHints:\n\nR has built-in “letters” vectors?\nWhat do we want to to for every element in our sequence?\nWhich function “prints” text to the console?"
+    "text": "Practice\nWrite a for loop to print every letter in the alphabet in lowercase and in reverse alphabetical order (e.g. z,y,x,w…) \nHints:\n\nR has built-in “letters” vectors?\nWhat do we want to do for every element in our sequence?\nWhich function “prints” text to the console?"
   },
   {
     "objectID": "slides/programming.html#loops-and-groups",
@@ -1742,5 +1742,19 @@
     "crumbs": [
       "Course materials"
     ]
+  },
+  {
+    "objectID": "slides/preparation.html#selection-helpers",
+    "href": "slides/preparation.html#selection-helpers",
+    "title": "Data preparation",
+    "section": "Selection helpers",
+    "text": "Selection helpers\nTo specify sets of columns, there are a number of useful helper functions that we can use alongside or instead of the across function.\n\n\n\ndplyr selection features and helpers"
+  },
+  {
+    "objectID": "slides/preparation.html#section-19",
+    "href": "slides/preparation.html#section-19",
+    "title": "Data preparation",
+    "section": "",
+    "text": "dining_long %&gt;% \n  pivot_wider(names_from = restaurant_type, \n              values_from = n_restaurants)\n\n# A tibble: 4 × 5\n  area_type   district coffee_shops fast_food fish_chips\n  &lt;chr&gt;       &lt;chr&gt;           &lt;int&gt;     &lt;int&gt;      &lt;int&gt;\n1 Residential South               2         3          1\n2 Commercial  North              12         6          4\n3 Suburban    South               2         4          3\n4 Rural       East                0         2          0"
   }
 ]

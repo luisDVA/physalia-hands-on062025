@@ -95,7 +95,7 @@
     code span.vs { color: #f1fa8c; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d042da4d4448142c59ee76d0f1bb8080.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-8051b9c44776b235eb1682e0f7e39092.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -3623,23 +3623,21 @@ Crystal Lewis</p>
 <section id="operating-on-multiple-columns" class="slide level2">
 <h2>Operating on multiple columns</h2>
 <p><span style="font-size: 1.5em; text-align: center"><code>across()</code></span></p>
-<p><code>filter</code> or <code>mutate</code> multiple columns simultaneously</p>
+<p><code>select</code>, <code>filter</code> or <code>mutate</code> multiple columns simultaneously</p>
 <ul>
 <li><p>By position (not recommended), name, or type</p></li>
 <li><p>Compound selections of columns<br>
-(e.g.&nbsp;<em>factor columns that contain “month” in their name</em>)</p></li>
+(e.g.&nbsp;<em>numeric columns that contain “precip” in their name</em>)</p></li>
 </ul>
 </section>
 <section id="across-arguments" class="slide level2">
 <h2><code>across()</code> arguments:</h2>
-<p><span style="color:green font-size: 1.3em">.cols</span> Columns to transform</p>
-<p><span style="color:pink font-size: 1.3em">.fns</span> Function to apply to each of the selected columns</p>
-<blockquote>
-<p>Expects a function, so function name and arguments can be passed separately (new preference is for anonymous functions, which we will cover later)</p>
-</blockquote>
+<p><br><br></p>
+<p><code>.cols</code> Columns to transform</p>
+<p><code>.fns</code> Function to apply to each of the selected columns</p>
 </section>
-<section class="slide level2">
-
+<section id="section-11" class="slide level2">
+<h2></h2>
 <p><br></p>
 <div class="med-code">
 <div class="cell">
@@ -3657,179 +3655,17 @@ Crystal Lewis</p>
 </div>
 </div>
 <ul>
-<li><p><code>.cols</code> is a vector with the names of the two columns we’re interested in</p></li>
+<li><p><code>.cols</code> is a vector with the names of the columns we’re interested in</p></li>
 <li><p><code>log</code> is the function to apply</p></li>
 </ul>
 </section>
-<section id="useful-column-selection-helpers" class="slide level2">
-<h2>Useful column selection helpers</h2>
+<section id="selection-helpers" class="slide level2">
+<h2>Selection helpers</h2>
 <p>To specify sets of columns, there are a number of useful helper functions that we can use alongside or instead of the <code>across</code> function.</p>
 <p><br></p>
 <div class="rightref">
 <div class="refbox">
 <p><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html">dplyr selection features and helpers</a></p>
-</div>
-</div>
-</section>
-<section id="everything" class="slide level2">
-<h2><code>everything()</code></h2>
-<p>Matches all variables</p>
-<div class="med-code">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb45-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.character)) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-3"><a></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 4
-  cntry     species threatened region 
-  &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  
-1 Indonesia 670     191        Asia   
-2 Brasil    648     80         America
-3 China     551     73         Asia   </code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="section-11" class="slide level2">
-<h2><code>!</code></h2>
-<p>Take the complement of a set of variables (negate a selection)</p>
-<div class="med-code">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb47-2"><a></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(region,threatened)) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 2
-  cntry     species
-  &lt;chr&gt;       &lt;int&gt;
-1 Indonesia     670
-2 Brasil        648
-3 China         551
-4 Mexico        523
-5 Peru          467
-6 Congo         430</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="where" class="slide level2">
-<h2><code>where()</code></h2>
-<p>Selects variables for which a predicate function returns <code>TRUE</code></p>
-<blockquote>
-<p>e.g.&nbsp;subset or transform all numeric variables, determined by <code>is.numeric()</code></p>
-</blockquote>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb49-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), log2)) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 4
-  cntry     species threatened region 
-  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
-1 Indonesia    9.39       7.58 Asia   
-2 Brasil       9.34       6.32 America
-3 China        9.11       6.19 Asia   </code></pre>
-</div>
-</div>
-</section>
-<section id="section-12" class="slide level2">
-<h2><code>:</code></h2>
-<p>Select a range of consecutive variables</p>
-<div class="med-code">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb51-2"><a></a>  <span class="fu">select</span>(cntry<span class="sc">:</span>threatened) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 3
-  cntry     species threatened
-  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
-1 Indonesia     670        191
-2 Brasil        648         80
-3 China         551         73
-4 Mexico        523         96
-5 Peru          467         53
-6 Congo         430         15</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="section-13" class="slide level2">
-<h2><code>-</code></h2>
-<p>Exclude variables</p>
-<p>(return all elements except the one preceded by the subtraction operator)</p>
-<div class="med-code">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb53-2"><a></a>  <span class="fu">select</span>(<span class="sc">-</span>region) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 3
-  cntry     species threatened
-  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
-1 Indonesia     670        191
-2 Brasil        648         80
-3 China         551         73</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="no-helpers-multiple-variables" class="slide level2">
-<h2>No helpers, multiple variables</h2>
-<p>Square root (<code>sqrt()</code>) of <code>species</code> and <code>threatened</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a>mcountries <span class="sc">%&gt;%</span>  </span>
-<span id="cb55-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(species, threatened), sqrt)) <span class="sc">%&gt;%</span> </span>
-<span id="cb55-3"><a></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  cntry     species threatened region 
-  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
-1 Indonesia    25.9      13.8  Asia   
-2 Brasil       25.5       8.94 America
-3 China        23.5       8.54 Asia   
-4 Mexico       22.9       9.80 America
-5 Peru         21.6       7.28 America
-6 Congo        20.7       3.87 Africa </code></pre>
-</div>
-</div>
-</section>
-<section id="square-root-sqrt-of-all-numeric-variables" class="slide level2">
-<h2>Square root (<code>sqrt()</code>) of all numeric variables</h2>
-<div class="med-code">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb57-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), sqrt)) <span class="sc">%&gt;%</span> </span>
-<span id="cb57-3"><a></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  cntry     species threatened region 
-  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
-1 Indonesia    25.9      13.8  Asia   
-2 Brasil       25.5       8.94 America
-3 China        23.5       8.54 Asia   
-4 Mexico       22.9       9.80 America
-5 Peru         21.6       7.28 America
-6 Congo        20.7       3.87 Africa </code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="we-can-also-use-selection-helpers-to-keepdiscard-variables" class="slide level2">
-<h2>We can also use selection helpers to keep/discard variables</h2>
-<p>Keep only columns of type numeric</p>
-<div class="med-code">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
-<span id="cb59-2"><a></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
-<span id="cb59-3"><a></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 2
-  species threatened
-    &lt;int&gt;      &lt;int&gt;
-1     670        191
-2     648         80
-3     551         73
-4     523         96
-5     467         53
-6     430         15</code></pre>
-</div>
 </div>
 </div>
 </section></section>
@@ -3838,7 +3674,7 @@ Crystal Lewis</p>
 <h1>Pivoting data</h1>
 
 </section>
-<section id="section-14" class="slide level2">
+<section id="section-12" class="slide level2">
 <h2></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -3859,19 +3695,19 @@ Maps well to plot axes and aesthetics</p>
 <p><br> wide to long: <code>pivot_longer()</code></p>
 <div class="med-code">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a></a><span class="fu">pivot_longer</span>(data, cols, names_to, </span>
-<span id="cb61-2"><a></a>             values_to)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a><span class="fu">pivot_longer</span>(data, cols, names_to, </span>
+<span id="cb45-2"><a></a>             values_to)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p><br> long to wide: <code>pivot_wider()</code></p>
 <div class="med-code">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a><span class="fu">pivot_longer</span>(data, cols, names_from,</span>
-<span id="cb62-2"><a></a>             values_from)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a><span class="fu">pivot_longer</span>(data, cols, names_from,</span>
+<span id="cb46-2"><a></a>             values_from)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
-<section id="section-15" class="slide level2">
+<section id="section-13" class="slide level2">
 <h2></h2>
 <div class="panel-tabset">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">dining options</a></li><li><a href="#tabset-3-2">Data</a></li></ul>
@@ -4377,14 +4213,14 @@ Maps well to plot axes and aesthetics</p>
 </div>
 <div id="tabset-3-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a></a>dining <span class="ot">&lt;-</span> </span>
-<span id="cb63-2"><a></a>tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb63-3"><a></a>     <span class="sc">~</span>area_type, <span class="sc">~</span>district, <span class="sc">~</span>coffee_shops, <span class="sc">~</span>fast_food, <span class="sc">~</span>fish_chips,</span>
-<span id="cb63-4"><a></a>  <span class="st">"Residential"</span>,   <span class="st">"South"</span>,            <span class="dv">2</span>L,         <span class="dv">3</span>L,          <span class="dv">1</span>L,</span>
-<span id="cb63-5"><a></a>   <span class="st">"Commercial"</span>,   <span class="st">"North"</span>,           <span class="dv">12</span>L,         <span class="dv">6</span>L,          <span class="dv">4</span>L,</span>
-<span id="cb63-6"><a></a>     <span class="st">"Suburban"</span>,   <span class="st">"South"</span>,            <span class="dv">2</span>L,         <span class="dv">4</span>L,          <span class="dv">3</span>L,</span>
-<span id="cb63-7"><a></a>        <span class="st">"Rural"</span>,    <span class="st">"East"</span>,            <span class="dv">0</span>L,         <span class="dv">2</span>L,          <span class="dv">0</span>L</span>
-<span id="cb63-8"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a>dining <span class="ot">&lt;-</span> </span>
+<span id="cb47-2"><a></a>tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb47-3"><a></a>     <span class="sc">~</span>area_type, <span class="sc">~</span>district, <span class="sc">~</span>coffee_shops, <span class="sc">~</span>fast_food, <span class="sc">~</span>fish_chips,</span>
+<span id="cb47-4"><a></a>  <span class="st">"Residential"</span>,   <span class="st">"South"</span>,            <span class="dv">2</span>L,         <span class="dv">3</span>L,          <span class="dv">1</span>L,</span>
+<span id="cb47-5"><a></a>   <span class="st">"Commercial"</span>,   <span class="st">"North"</span>,           <span class="dv">12</span>L,         <span class="dv">6</span>L,          <span class="dv">4</span>L,</span>
+<span id="cb47-6"><a></a>     <span class="st">"Suburban"</span>,   <span class="st">"South"</span>,            <span class="dv">2</span>L,         <span class="dv">4</span>L,          <span class="dv">3</span>L,</span>
+<span id="cb47-7"><a></a>        <span class="st">"Rural"</span>,    <span class="st">"East"</span>,            <span class="dv">0</span>L,         <span class="dv">2</span>L,          <span class="dv">0</span>L</span>
+<span id="cb47-8"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -4395,34 +4231,34 @@ Maps well to plot axes and aesthetics</p>
 <section id="wide-to-long" class="slide level2">
 <h2>Wide to long</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a>dining_long <span class="ot">&lt;-</span> dining <span class="sc">%&gt;%</span></span>
-<span id="cb64-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb64-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
-<span id="cb64-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
-<span id="cb64-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a>dining_long <span class="ot">&lt;-</span> dining <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb48-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
+<span id="cb48-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
+<span id="cb48-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong><code>cols</code></strong> Which columns have data in their names</p>
 <p><strong><code>names_to</code></strong> Name for the new column to be created from <code>cols</code></p>
 <p><strong><code>values_to</code></strong> Name of the column to be created from the contents of the cells in <strong><code>cols</code></strong></p>
 </section>
-<section id="section-16" class="slide level2">
+<section id="section-14" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a></a>dining <span class="sc">%&gt;%</span></span>
-<span id="cb65-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb65-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
-<span id="cb65-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
-<span id="cb65-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a>dining <span class="sc">%&gt;%</span></span>
+<span id="cb49-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb49-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
+<span id="cb49-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
+<span id="cb49-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section-17" class="slide level2">
+<section id="section-15" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a>dining <span class="sc">%&gt;%</span></span>
-<span id="cb66-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb66-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
-<span id="cb66-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
-<span id="cb66-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a>dining <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb50-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
+<span id="cb50-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
+<span id="cb50-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 4
    area_type   district restaurant_type n_restaurants
@@ -4445,19 +4281,19 @@ Maps well to plot axes and aesthetics</p>
 <section id="long-to-wide" class="slide level2">
 <h2>Long to wide</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a>dining_long <span class="sc">%&gt;%</span> </span>
-<span id="cb68-2"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> restaurant_type, </span>
-<span id="cb68-3"><a></a>              <span class="at">values_from =</span> n_restaurants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a>dining_long <span class="sc">%&gt;%</span> </span>
+<span id="cb52-2"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> restaurant_type, </span>
+<span id="cb52-3"><a></a>              <span class="at">values_from =</span> n_restaurants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong><code>names_from</code></strong> Which columns’ values will be used for new <em>column names</em></p>
 <p><strong><code>values_from</code></strong> Which column has the <em>cell values</em> for the new output columns</p>
 </section>
-<section id="section-18" class="slide level2">
+<section id="section-16" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a>dining_long <span class="sc">%&gt;%</span> </span>
-<span id="cb69-2"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> restaurant_type, </span>
-<span id="cb69-3"><a></a>              <span class="at">values_from =</span> n_restaurants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a>dining_long <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> restaurant_type, </span>
+<span id="cb53-3"><a></a>              <span class="at">values_from =</span> n_restaurants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
   area_type   district coffee_shops fast_food fish_chips

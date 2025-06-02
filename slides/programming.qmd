@@ -317,7 +317,7 @@ Write a for loop to print every letter in the alphabet in lowercase and in rever
 **Hints:**
 
 -   R has built-in "letters" vectors?
--   What do we want to to **for every element** in our sequence?
+-   What do we want to do **for every element** in our sequence?
 -   Which function "prints" text to the console?
 
 

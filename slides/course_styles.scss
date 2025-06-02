@@ -1,11 +1,11 @@
 /*-- scss:defaults --*/
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital,wght@0,300..700;1,300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 
 // fonts
 $font-family-sans-serif: 'Inclusive Sans',Helvetica, sans-serif, 'News Cycle';
-$font-family-monospace: 'Martian Mono', monospace;
+$font-family-monospace: 'Source Code Pro', monospace;
 $code-color: #38a3a5;
 $presentation-heading-font: 'Geist', sans-serif;
 
@@ -73,7 +73,7 @@ border: 1px solid black
 
 // inline
 .reveal code {
-	font-size: 104%;
+	font-size: 103%;
 	background-color: #ede7e3;
 	background-color: #ede7e3;
 	padding: 3px;
