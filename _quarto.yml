@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Practical intro to R"
+  sidebar:
+    background: primary
+    pinned: true
+    align: center
+    tools:
+      - icon: github
+        href: https://github.com/luisDVA/physalia-hands-on062025
+        text: Site Source Code
+    style: docked
+    contents: 
+      - href: index.qmd
+        text: Home
+      - href: materials.qmd
+        text: Course materials
+  page-footer:
+    left: "Created with [Quarto](https://quarto.org/)."
+    right: "Luis D. Verde Arregoitia - 2024"
+
+format:
+  html:
+    theme: 
+      dark: [darkly,w_styles.scss]
+      light: [flatly,w_styles.scss]
+    fontsize: 1.3em
+    toc: true
+    mainfont: "Inclusive Sans"
+
+execute:
+  freeze: auto
+

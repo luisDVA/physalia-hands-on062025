@@ -1,0 +1,4906 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-ed09741bc9a4bc7923efc7a27dab3f48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
+
+  <meta name="author" content="Luis D. Verde Arregoitia">
+  <title>Practical intro to R – Data preparation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d042da4d4448142c59ee76d0f1bb8080.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Data preparation</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Luis D. Verde Arregoitia 
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2">
+
+<h3 id="today">Today:</h3>
+<ul>
+<li>The <code>tidyverse</code>&nbsp;</li>
+<li>pipes</li>
+<li>Data organization<br>
+</li>
+<li>Tidy data principles</li>
+<li>tools for data wrangling<br>
+</li>
+<li>Subsetting and pivoting data</li>
+</ul>
+</section>
+<section id="tidyverse" class="slide level2">
+<h2>tidyverse</h2>
+<div class="columns">
+<div class="column" style="width:20%;">
+<p><img data-src="imgs/tidyverse_celestial.png"></p>
+</div><div class="column" style="width:80%;">
+<blockquote>
+<p>… an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. Its primary goal is to facilitate a conversation between a human and a computer about data …</p>
+</blockquote>
+</div></div>
+<div class="rightref">
+<div class="refbox">
+<p>Wickham et al.&nbsp;(2019)<br>
+<a href="https://www.theoj.org/joss-papers/joss.01686/10.21105.joss.01686.pdf">Welcome to the tidyverse</a><br>
+https://www.tidyverse.org/</p>
+</div>
+</div>
+</section>
+<section id="tidyverse-1" class="slide level2">
+<h2>tidyverse</h2>
+<ul>
+<li><p>For the repeated tasks in of nearly every project: data import, tidying, manipulation, visualization, and programming</p></li>
+<li><p>Designed for easier engagement with additional pieces of the larger ecosystem</p></li>
+</ul>
+<div class="rightref">
+<div class="refbox">
+<p>Çetinkaya-Rundel et al.&nbsp;(<a href="https://arxiv.org/abs/2108.03510">2021</a>)<br>
+An educator’s perspective of the tidyverse</p>
+</div>
+</div>
+</section>
+<section id="pipes" class="slide level2">
+<h2>Pipes</h2>
+<p>To perform multiple operations in sequence:</p>
+<ul>
+<li class="fragment"><p>Nested code (results evaluated from the inside out)</p></li>
+<li class="fragment"><p>Intermediate objects (assign objects with intermediate results and pass on to the next function in a sequence)</p></li>
+<li class="fragment"><p>Pipes (structure sequential operations left-to-right)</p></li>
+</ul>
+</section>
+<section id="nested-code" class="slide level2">
+<h2>Nested code</h2>
+<p><br></p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>scores <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">5</span>,<span class="dv">9</span>,<span class="dv">8</span>)</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a><span class="fu">round</span>(<span class="fu">mean</span>(scores), <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.78</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="intermediate-objects" class="slide level2">
+<h2>Intermediate objects</h2>
+<p><br></p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>mn_scrs <span class="ot">&lt;-</span> <span class="fu">mean</span>(scores)</span>
+<span id="cb3-2"><a></a></span>
+<span id="cb3-3"><a></a><span class="fu">round</span>(mn_scrs, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.78</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="pipes-1" class="slide level2">
+<h2>Pipes</h2>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:30%;">
+<p>Left Hand Side<br>
+(LHS)</p>
+</div><div class="column" style="width:40%;">
+<p><code>pipe operator</code></p>
+<p><code>%&gt;%</code> or <code>|&gt;</code></p>
+</div><div class="column" style="width:30%;">
+<p>Right Hand Side<br>
+(RHS)</p>
+</div></div>
+</div>
+<p><br></p>
+<div class="fragment">
+<p>Take an <strong>object</strong> on the <strong>Left Hand Side</strong> of the pipe and insert it into a <strong>function</strong> as an argument on the <strong>Right Hand Side</strong></p>
+<p>* By default, <strong>LHS</strong> is placed as the <strong>first</strong> argument in the call</p>
+</div>
+</section>
+<section id="pipes-2" class="slide level2">
+<h2>Pipes</h2>
+<ul>
+<li><p>Minimize the need for intermediate objects and nested code</p></li>
+<li><p>Make code readable</p></li>
+<li><p>Easy to add or remove steps</p></li>
+</ul>
+<blockquote>
+<p>Insert with <code>ctrl + shift + M</code></p>
+</blockquote>
+<div style="text-align: right">
+<p>Adolfo Álvarez (2021)<br>
+<a href="http://adolfoalvarez.cl/blog/2021-09-16-plumbers-chains-and-famous-painters-the-history-of-the-pipe-operator-in-r/">The (updated) history of the pipe operator in R</a></p>
+</div>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb5-2"><a></a>scores <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a></a>  <span class="fu">mean</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a></a>  <span class="fu">round</span>(<span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.78</code></pre>
+</div>
+</div>
+</div>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>scores <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a></a>  mean <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a></a>  <span class="fu">round</span>(<span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.78</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p><br></p>
+<div style="text-align: center">
+<p><code>LHS |&gt; RHS(argument = 12)</code></p>
+<p><em>becomes</em></p>
+<p><code>RHS(LHS, argument = 12)</code></p>
+</div>
+</section>
+<section id="tibbles" class="slide level2">
+<h2>tibbles</h2>
+<p>A modern implementation of <code>data.frames</code></p>
+<p>Implemented across the <code>tidyverse</code> through 📦 <code>tibble</code></p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb9-2"><a></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>),</span>
+<span id="cb9-3"><a></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb9-4"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  x         y
+  &lt;chr&gt; &lt;dbl&gt;
+1 a         1
+2 b         2
+3 c         3</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<p>tibbles are the shared rectangular data object for all <code>tidyverse</code> packages. However:</p>
+<ul>
+<li class="fragment"><p><code>data.frame</code> in ➡️ <code>data.frame</code> out</p></li>
+<li class="fragment"><p><code>tibble</code> in ➡️ <code>tibble</code> out</p></li>
+<li class="fragment"><p>create a new object ➡️ <code>tibble</code> out</p></li>
+</ul>
+</section>
+<section id="creating-tibbles" class="slide level2">
+<h2>Creating tibbles</h2>
+<ul>
+<li><p>Default function outputs</p></li>
+<li><p>Coerce other objects with <code>as_tibble()</code></p></li>
+<li><p>Build from scratch with <code>tibble()</code></p></li>
+</ul>
+</section>
+<section id="tibbles-1" class="slide level2">
+<h2>tibbles</h2>
+<p>To avoid ambiguity:</p>
+<ul>
+<li class="fragment"><p>No row names</p></li>
+<li class="fragment"><p>Variable names untouched</p></li>
+<li class="fragment"><p>Character columns not treated as factors</p></li>
+<li class="fragment"><p>Complete variable names needed for subsetting with <code>$</code></p></li>
+</ul>
+</section>
+<section id="indexing-and-subsetting-with" class="slide level2">
+<h2>Indexing and subsetting with <code>$</code></h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">letters=</span><span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),</span>
+<span id="cb11-2"><a></a>                 <span class="at">numbers=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>))</span>
+<span id="cb11-3"><a></a>my_df<span class="sc">$</span>let</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "A" "B" "C"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>my_tib <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">letters=</span><span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>),</span>
+<span id="cb13-2"><a></a>                 <span class="at">numbers=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>))</span>
+<span id="cb13-3"><a></a>my_tib<span class="sc">$</span>let</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>my_tib<span class="sc">$</span>letters </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "A" "B" "C"</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="tibble-printing" class="slide level2">
+<h2>tibble printing</h2>
+<p>For brevity, <em>tibbles</em> printed on the console show:</p>
+<ul>
+<li class="fragment"><p>First 10 rows</p></li>
+<li class="fragment"><p>How many rows and columns are not shown</p></li>
+<li class="fragment"><p>As many columns as can fit on the console width</p></li>
+<li class="fragment"><p>Variable types</p></li>
+<li class="fragment"><p>Rounding and highlighting for numeric variables</p></li>
+</ul>
+</section>
+<section>
+<section id="data-organization" class="title-slide slide level1 center">
+<h1>Data organization</h1>
+
+</section>
+<section id="whats-wrong-with-these-data" class="slide level2" data-background-color="#a4c5ff">
+<h2>What’s wrong with these data?</h2>
+
+<img data-src="imgs/wordData.png" class="r-stretch"></section>
+<section id="a-more-usable-format" class="slide level2">
+<h2>A more usable format</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  Name          Role     Year Travel.Type   Trip.Purpose  Cost Country
+  &lt;chr&gt;         &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;        &lt;int&gt; &lt;chr&gt;  
+1 Jane Michaels PI       2019 National      Field Work    1000 UK     
+2 Jane Michaels PI       2019 National      Field Work    2000 UK     
+3 Jane Michaels PI       2019 National      Conference    1000 UK     
+4 Jane Michaels PI       2019 National      Workshop      1000 UK     
+5 Jane Michaels PI       2019 International Conference    3000 USA    
+6 Raul J        Student  2019 National      Field Work       0 UK     </code></pre>
+</div>
+</div>
+</section>
+<section id="well-organized-data" class="slide level2">
+<h2>Well-organized data</h2>
+<ul>
+<li><p>Easier to import and manipulate</p></li>
+<li><p>Less prone to (non-replicable) errors</p>
+<ul>
+<li>omission</li>
+<li>alteration</li>
+<li>duplication</li>
+</ul></li>
+</ul>
+<p>Good data organization helps us share better data, and identify and solve problems in existing data</p>
+<div class="rightref">
+<div class="refbox">
+<p>Chapter 3. Data Organization<br>
+<a href="https://datamgmtinedresearch.com/structure">Data Management in Research</a><br>
+Crystal Lewis</p>
+</div>
+</div>
+</section>
+<section id="data-organization-best-practices" class="slide level2">
+<h2>Data Organization best practices</h2>
+<ul>
+<li><p>Consistency in names, layouts, abbreviations, units, etc.</p></li>
+<li><p>Good names</p></li>
+<li><p>Rectangular layouts</p></li>
+</ul>
+<div class="rightref">
+<div class="refbox">
+<div class="columns">
+<div class="column" style="width:33%;">
+<p>Openscapes (2020)<br>
+<a href="https://www.openscapes.org/blog/2020/10/12/tidy-data/">Tidy data illustrated</a></p>
+</div><div class="column" style="width:33%;">
+<p>Broman and Woo (2018)<br>
+<a href="https://doi.org/10.1080/00031305.2017.1375989">Organizing data in spreadsheets</a></p>
+</div><div class="column" style="width:33%;">
+<p>Verde Arregoita et al.&nbsp;(2018)<br>
+<a href="https://doi.org/10.4404/hystrix-00133-2018">Good practices for sharing analysis-ready data…</a></p>
+</div></div>
+</div>
+</div>
+</section>
+<section id="consistency" class="slide level2">
+<h2>Consistency</h2>
+
+<img data-src="imgs/consistency.png" class="r-stretch"><p>Find the inconsistencies</p>
+</section>
+<section id="data-rectangles" class="slide level2">
+<h2>Data rectangles</h2>
+
+<img data-src="imgs/fig3-3rectangle.PNG" class="r-stretch quarto-figure-center"><p class="caption">Data Organization - Crystal Lewis</p><ul>
+<li><p>Each row has the same number of columns</p></li>
+<li><p>Each column has the same number of rows</p></li>
+</ul>
+<p>Equal-height columns give a rectangular shape to the data frame</p>
+</section>
+<section id="section-3" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="imgs/cashflow.png" style="width:64.0%"></p>
+</div><div class="column" style="width:35%;">
+<p>Davis Vaughan (2018)<br>
+<a href="https://blog.davisvaughan.com/2018/02/16/tidying-excel-cash-flow-spreadsheets-in-r/">Tidying Excel cash flow spreadsheets</a></p>
+</div></div>
+</section></section>
+<section>
+<section id="tidy-data-and-data-rectangling" class="title-slide slide level1 center">
+<h1>Tidy data and data rectangling</h1>
+
+</section>
+<section id="ready-for-immediate-use" class="slide level2">
+<h2>Ready for immediate use?</h2>
+<ul>
+<li>Subset, group, transform, sort, visualize, model, share</li>
+</ul>
+
+<img data-src="imgs/r4dscomm.png" class="r-stretch quarto-figure-center"><p class="caption">R4DS 2nd ed</p></section>
+<section id="not-ready" class="slide level2">
+<h2>Not ready?</h2>
+<ul>
+<li>Restructure for easier and more effective handling</li>
+</ul>
+</section>
+<section id="tidy-data" class="slide level2">
+<h2>Tidy data</h2>
+<p>An accessible reformulation of existing principles and definitions from statistics and computer science, to ultimately help us structure our data for usability.</p>
+<p><br></p>
+<div class="rightref">
+<div class="refbox">
+<p>Wickham (2014)<br>
+<a href="https://www.jstatsoft.org/article/view/v059i10/">Tidy Data</a> - Journal of Statistical Software</p>
+</div>
+</div>
+</section>
+<section id="tidy-data-1" class="slide level2">
+<h2>Tidy data</h2>
+<ul>
+<li><p>Arranged in a 2D data matrix with rows and columns</p></li>
+<li><p>Rows correspond to observations</p></li>
+<li><p>Columns correspond to variables</p></li>
+<li><p>One value per cell</p></li>
+</ul>
+<div style="text-align: right">
+<p>Wickham (2014)<br>
+<a href="https://www.jstatsoft.org/article/view/v059i10/">Tidy Data</a> - Journal of Statistical Software</p>
+</div>
+</section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+
+<img data-src="imgs/varscols.png" style="width:90.0%" class="r-stretch"></section>
+<section id="section-5" class="slide level2">
+<h2></h2>
+
+<img data-src="imgs/tidydata.png" class="r-stretch"></section>
+<section id="why-tidy" class="slide level2">
+<h2>Why tidy?</h2>
+<p>Easy to reshape into other structures after cleaning or transforming</p>
+
+<img data-src="imgs/pivotingintro.gif" class="r-stretch"></section>
+<section id="section-6" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="imgs/tidyvarsmap.png"></p>
+</div><div class="column" style="width:60%;">
+<p>Variables feed directly into model specifications and plotting parameters.</p>
+</div></div>
+</section>
+<section id="why-not" class="slide level2">
+<h2>Why not</h2>
+<ul>
+<li><p>Tidy data is more repetitive, often takes up more space than other more condensed representations</p></li>
+<li><p>Not ideal for data entry, or for tables that will be embedded in a text document</p></li>
+</ul>
+</section></section>
+<section>
+<section id="data-organization-quick-tips" class="title-slide slide level1 center">
+<h1>Data organization quick tips</h1>
+
+</section>
+<section id="grouping-information-goes-in-its-own-variable" class="slide level2">
+<h2>Grouping information goes in its own variable</h2>
+<p>Use indicator variables instead of encoding information into an existing value.</p>
+
+<img data-src="imgs/indgroups.png" class="r-stretch"></section>
+<section id="na-and-empty-values" class="slide level2">
+<h2>NA and Empty Values</h2>
+<p>Not recorded, not applicable, lost in transcription, etc.</p>
+<p><br> <span style="font-size: 1.5em; text-align: center">Missing data are still data</span> <br></p>
+<p>In R we use <span style="color:red; font-family: Liberation Mono; font-weight: bold">NA</span>, a special logical constant that denotes missing values</p>
+</section>
+<section id="section-7" class="slide level2">
+<h2></h2>
+<ul>
+<li><p>Code <span style="color:red; font-family: Liberation Mono; font-weight: bold">NA</span> values consistently (if done consistently, blank cells are OK)</p></li>
+<li><p>Avoid ambiguity</p></li>
+</ul>
+<blockquote>
+<p>Are data known to be missing, or was a value intentionally left blank?</p>
+</blockquote>
+<ul>
+<li><p>Avoid empty cells as padding to align values, or for aesthetic or layout purposes.</p></li>
+<li><p>Avoid <span style="color:red"><code>NA</code></span> values in column headers</p></li>
+</ul>
+</section>
+<section id="section-8" class="slide level2">
+<h2></h2>
+
+<img data-src="imgs/NAblank.png" class="r-stretch"></section>
+<section id="make-reasonable-headers-column-names" class="slide level2">
+<h2>Make reasonable headers (column names)</h2>
+<h4 id="uninformative-names-with-inconsistent-naming-schemes">Uninformative names with inconsistent naming schemes</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="wlbyvncuou" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wlbyvncuou table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wlbyvncuou thead, #wlbyvncuou tbody, #wlbyvncuou tfoot, #wlbyvncuou tr, #wlbyvncuou td, #wlbyvncuou th {
+  border-style: none;
+}
+
+#wlbyvncuou p {
+  margin: 0;
+  padding: 0;
+}
+
+#wlbyvncuou .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wlbyvncuou .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wlbyvncuou .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wlbyvncuou .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wlbyvncuou .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wlbyvncuou .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wlbyvncuou .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wlbyvncuou .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wlbyvncuou .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wlbyvncuou .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wlbyvncuou .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wlbyvncuou .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wlbyvncuou .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wlbyvncuou .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wlbyvncuou .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wlbyvncuou .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wlbyvncuou .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wlbyvncuou .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wlbyvncuou .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wlbyvncuou .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wlbyvncuou .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wlbyvncuou .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wlbyvncuou .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wlbyvncuou .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wlbyvncuou .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wlbyvncuou .gt_left {
+  text-align: left;
+}
+
+#wlbyvncuou .gt_center {
+  text-align: center;
+}
+
+#wlbyvncuou .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wlbyvncuou .gt_font_normal {
+  font-weight: normal;
+}
+
+#wlbyvncuou .gt_font_bold {
+  font-weight: bold;
+}
+
+#wlbyvncuou .gt_font_italic {
+  font-style: italic;
+}
+
+#wlbyvncuou .gt_super {
+  font-size: 65%;
+}
+
+#wlbyvncuou .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wlbyvncuou .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wlbyvncuou .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wlbyvncuou .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wlbyvncuou .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wlbyvncuou .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wlbyvncuou .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="X" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">X</th>
+<th id="X1" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">X1</th>
+<th id="X2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">X2</th>
+<th id="min_Score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">min_Score</th>
+<th id="AVERAGE.SCORE" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">AVERAGE.SCORE</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="X" style="font-size: 25px">UMN</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 25px">EAST</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 25px">A</td>
+<td class="gt_row gt_right" headers="min_Score" style="font-size: 25px">7.7</td>
+<td class="gt_row gt_right" headers="AVERAGE.SCORE" style="font-size: 25px">7.701</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="X" style="font-size: 25px">UV</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 25px">WEST</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 25px">B</td>
+<td class="gt_row gt_right" headers="min_Score" style="font-size: 25px">8.9</td>
+<td class="gt_row gt_right" headers="AVERAGE.SCORE" style="font-size: 25px">8.890</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="X" style="font-size: 25px">UNLV</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 25px">EAST</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 25px">C</td>
+<td class="gt_row gt_right" headers="min_Score" style="font-size: 25px">9.2</td>
+<td class="gt_row gt_right" headers="AVERAGE.SCORE" style="font-size: 25px">9.199</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li><p>More difficult to remember and specify</p></li>
+<li><p>Do not sort well</p></li>
+</ul>
+</section>
+<section id="much-better" class="slide level2">
+<h2>Much better</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="taaqrbednf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#taaqrbednf table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#taaqrbednf thead, #taaqrbednf tbody, #taaqrbednf tfoot, #taaqrbednf tr, #taaqrbednf td, #taaqrbednf th {
+  border-style: none;
+}
+
+#taaqrbednf p {
+  margin: 0;
+  padding: 0;
+}
+
+#taaqrbednf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#taaqrbednf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#taaqrbednf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#taaqrbednf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#taaqrbednf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#taaqrbednf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#taaqrbednf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#taaqrbednf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#taaqrbednf .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#taaqrbednf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#taaqrbednf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#taaqrbednf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#taaqrbednf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#taaqrbednf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#taaqrbednf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#taaqrbednf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#taaqrbednf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#taaqrbednf .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#taaqrbednf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#taaqrbednf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#taaqrbednf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#taaqrbednf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#taaqrbednf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#taaqrbednf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#taaqrbednf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#taaqrbednf .gt_left {
+  text-align: left;
+}
+
+#taaqrbednf .gt_center {
+  text-align: center;
+}
+
+#taaqrbednf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#taaqrbednf .gt_font_normal {
+  font-weight: normal;
+}
+
+#taaqrbednf .gt_font_bold {
+  font-weight: bold;
+}
+
+#taaqrbednf .gt_font_italic {
+  font-style: italic;
+}
+
+#taaqrbednf .gt_super {
+  font-size: 65%;
+}
+
+#taaqrbednf .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#taaqrbednf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#taaqrbednf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#taaqrbednf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#taaqrbednf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#taaqrbednf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#taaqrbednf .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="university" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">university</th>
+<th id="coast" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">coast</th>
+<th id="division" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">division</th>
+<th id="min_score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">min_score</th>
+<th id="avg_score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 25px" scope="col">avg_score</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="university" style="font-size: 25px">UMN</td>
+<td class="gt_row gt_left" headers="coast" style="font-size: 25px">EAST</td>
+<td class="gt_row gt_left" headers="division" style="font-size: 25px">A</td>
+<td class="gt_row gt_right" headers="min_score" style="font-size: 25px">7.7</td>
+<td class="gt_row gt_right" headers="avg_score" style="font-size: 25px">7.701</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="university" style="font-size: 25px">UV</td>
+<td class="gt_row gt_left" headers="coast" style="font-size: 25px">WEST</td>
+<td class="gt_row gt_left" headers="division" style="font-size: 25px">B</td>
+<td class="gt_row gt_right" headers="min_score" style="font-size: 25px">8.9</td>
+<td class="gt_row gt_right" headers="avg_score" style="font-size: 25px">8.890</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="university" style="font-size: 25px">UNLV</td>
+<td class="gt_row gt_left" headers="coast" style="font-size: 25px">EAST</td>
+<td class="gt_row gt_left" headers="division" style="font-size: 25px">C</td>
+<td class="gt_row gt_right" headers="min_score" style="font-size: 25px">9.2</td>
+<td class="gt_row gt_right" headers="avg_score" style="font-size: 25px">9.199</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="names-broken-across-rows" class="slide level2">
+<h2>Names broken across rows</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div id="pdfacriqkv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pdfacriqkv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#pdfacriqkv thead, #pdfacriqkv tbody, #pdfacriqkv tfoot, #pdfacriqkv tr, #pdfacriqkv td, #pdfacriqkv th {
+  border-style: none;
+}
+
+#pdfacriqkv p {
+  margin: 0;
+  padding: 0;
+}
+
+#pdfacriqkv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#pdfacriqkv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#pdfacriqkv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#pdfacriqkv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#pdfacriqkv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#pdfacriqkv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#pdfacriqkv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#pdfacriqkv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#pdfacriqkv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#pdfacriqkv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#pdfacriqkv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pdfacriqkv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#pdfacriqkv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#pdfacriqkv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#pdfacriqkv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdfacriqkv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#pdfacriqkv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#pdfacriqkv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#pdfacriqkv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdfacriqkv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#pdfacriqkv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdfacriqkv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#pdfacriqkv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdfacriqkv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pdfacriqkv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdfacriqkv .gt_left {
+  text-align: left;
+}
+
+#pdfacriqkv .gt_center {
+  text-align: center;
+}
+
+#pdfacriqkv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#pdfacriqkv .gt_font_normal {
+  font-weight: normal;
+}
+
+#pdfacriqkv .gt_font_bold {
+  font-weight: bold;
+}
+
+#pdfacriqkv .gt_font_italic {
+  font-style: italic;
+}
+
+#pdfacriqkv .gt_super {
+  font-size: 65%;
+}
+
+#pdfacriqkv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#pdfacriqkv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#pdfacriqkv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#pdfacriqkv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#pdfacriqkv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#pdfacriqkv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#pdfacriqkv .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="X" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">X</th>
+<th id="X1" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">X1</th>
+<th id="X2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">X2</th>
+<th id="min" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">min</th>
+<th id="AVERAGE" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">AVERAGE</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="X" style="font-size: 24px">NA</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 24px">NA</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 24px">NA</td>
+<td class="gt_row gt_left" headers="min" style="font-size: 24px">Score</td>
+<td class="gt_row gt_left" headers="AVERAGE" style="font-size: 24px">SCORE</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="X" style="font-size: 24px">UMN</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 24px">EAST</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 24px">A</td>
+<td class="gt_row gt_left" headers="min" style="font-size: 24px">7.7</td>
+<td class="gt_row gt_left" headers="AVERAGE" style="font-size: 24px">7.701</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="X" style="font-size: 24px">UV</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 24px">WEST</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 24px">B</td>
+<td class="gt_row gt_left" headers="min" style="font-size: 24px">8.9</td>
+<td class="gt_row gt_left" headers="AVERAGE" style="font-size: 24px">8.89</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="X" style="font-size: 24px">UNLV</td>
+<td class="gt_row gt_left" headers="X1" style="font-size: 24px">EAST</td>
+<td class="gt_row gt_left" headers="X2" style="font-size: 24px">C</td>
+<td class="gt_row gt_left" headers="min" style="font-size: 24px">9.2</td>
+<td class="gt_row gt_left" headers="AVERAGE" style="font-size: 24px">9.199</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Variable names appear in &gt;1 rows</p>
+<p>Header fragments mixed with data</p>
+<p>Separators become implicit</p>
+<p><code>NAs</code> introduced</p>
+</div></div>
+</section></section>
+<section>
+<section id="data-sharing-best-practices" class="title-slide slide level1 center">
+<h1>Data sharing best practices</h1>
+
+</section>
+<section id="data-can-be-intuitive-easy-to-read-and-machine-readable-if-shared-adequately" class="slide level2">
+<h2>Data can be intuitive, easy to read AND machine-readable if shared adequately</h2>
+<p>↘ Reduce the need for complex/proprietary software or advanced programming skills for inclusion in future analyses.</p>
+<p><br></p>
+<p>↘ Minimize the amount of interpretation needed to use the data.</p>
+</section></section>
+<section>
+<section id="tools-for-data-wrangling" class="title-slide slide level1 center">
+<h1>Tools for data wrangling</h1>
+
+</section>
+<section id="functions-and-packages-to-prepare-transform-and-reshape-data" class="slide level2">
+<h2>Functions and packages to prepare, transform, and reshape data</h2>
+<div class="columns">
+<div class="column" style="width:20%;">
+<p>📦 <strong><code>dplyr</code></strong><br>
+📦 <strong><code>tidyr</code></strong></p>
+</div><div class="column" style="width:80%;">
+<p>Flexible and powerful</p>
+<ul>
+<li>Failsafes against accidental misuse</li>
+<li>Concise code</li>
+<li>Shared grammar and data structures</li>
+<li>Tasks split up across functions and packages</li>
+<li>pipe-friendly</li>
+</ul>
+</div></div>
+</section>
+<section id="handy-dplyr-functions" class="slide level2">
+<h2>Handy 📦 <code>dplyr</code> functions</h2>
+<ul>
+<li><p>Intuitive, user-friendly functions for common data manipulation tasks:</p>
+<ul>
+<li><p>Subset columns</p></li>
+<li><p>Subset rows</p></li>
+<li><p>Create or modify columns</p></li>
+</ul></li>
+<li><p>Each function does one only thing, but does it well</p></li>
+</ul>
+</section>
+<section id="section-9" class="slide level2">
+<h2></h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Megadiverse countries</a></li><li><a href="#tabset-1-2">Data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell">
+<div class="cell-output-display">
+<div id="qnpvfgapgh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qnpvfgapgh table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qnpvfgapgh thead, #qnpvfgapgh tbody, #qnpvfgapgh tfoot, #qnpvfgapgh tr, #qnpvfgapgh td, #qnpvfgapgh th {
+  border-style: none;
+}
+
+#qnpvfgapgh p {
+  margin: 0;
+  padding: 0;
+}
+
+#qnpvfgapgh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qnpvfgapgh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qnpvfgapgh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qnpvfgapgh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qnpvfgapgh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qnpvfgapgh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qnpvfgapgh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qnpvfgapgh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qnpvfgapgh .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qnpvfgapgh .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qnpvfgapgh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qnpvfgapgh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qnpvfgapgh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qnpvfgapgh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qnpvfgapgh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qnpvfgapgh .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qnpvfgapgh .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qnpvfgapgh .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qnpvfgapgh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qnpvfgapgh .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qnpvfgapgh .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qnpvfgapgh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qnpvfgapgh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qnpvfgapgh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qnpvfgapgh .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qnpvfgapgh .gt_left {
+  text-align: left;
+}
+
+#qnpvfgapgh .gt_center {
+  text-align: center;
+}
+
+#qnpvfgapgh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qnpvfgapgh .gt_font_normal {
+  font-weight: normal;
+}
+
+#qnpvfgapgh .gt_font_bold {
+  font-weight: bold;
+}
+
+#qnpvfgapgh .gt_font_italic {
+  font-style: italic;
+}
+
+#qnpvfgapgh .gt_super {
+  font-size: 65%;
+}
+
+#qnpvfgapgh .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qnpvfgapgh .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qnpvfgapgh .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qnpvfgapgh .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qnpvfgapgh .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qnpvfgapgh .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qnpvfgapgh .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qnpvfgapgh .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qnpvfgapgh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="cntry" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 21px" scope="col">cntry</th>
+<th id="species" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 21px" scope="col">species</th>
+<th id="threatened" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 21px" scope="col">threatened</th>
+<th id="region" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 21px" scope="col">region</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Indonesia</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">670</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">191</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">Asia</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Brasil</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">648</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">80</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">America</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">China</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">551</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">73</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">Asia</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Mexico</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">523</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">96</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">America</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Peru</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">467</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">53</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">America</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Congo</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">430</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">15</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">Africa</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">India</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">412</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">93</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">Asia</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Kenya</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">376</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">30</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">Africa</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Argentina</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">374</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">38</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">America</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Ecuador</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">372</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">47</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">America</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Venezuela</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">363</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">35</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">America</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="cntry" style="font-size: 21px">Tanzania</td>
+<td class="gt_row gt_right" headers="species" style="font-size: 21px">359</td>
+<td class="gt_row gt_right" headers="threatened" style="font-size: 21px">41</td>
+<td class="gt_row gt_left" headers="region" style="font-size: 21px">Africa</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a>mcountries <span class="ot">&lt;-</span> </span>
+<span id="cb18-2"><a></a>tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb18-3"><a></a>      <span class="sc">~</span>cntry,   <span class="sc">~</span>species, <span class="sc">~</span>threatened,   <span class="sc">~</span>region,</span>
+<span id="cb18-4"><a></a>  <span class="st">"Indonesia"</span>,      <span class="dv">670</span>L,        <span class="dv">191</span>L,    <span class="st">"Asia"</span>,</span>
+<span id="cb18-5"><a></a>     <span class="st">"Brasil"</span>,      <span class="dv">648</span>L,         <span class="dv">80</span>L, <span class="st">"America"</span>,</span>
+<span id="cb18-6"><a></a>      <span class="st">"China"</span>,      <span class="dv">551</span>L,         <span class="dv">73</span>L,    <span class="st">"Asia"</span>,</span>
+<span id="cb18-7"><a></a>     <span class="st">"Mexico"</span>,      <span class="dv">523</span>L,         <span class="dv">96</span>L, <span class="st">"America"</span>,</span>
+<span id="cb18-8"><a></a>       <span class="st">"Peru"</span>,      <span class="dv">467</span>L,         <span class="dv">53</span>L, <span class="st">"America"</span>,</span>
+<span id="cb18-9"><a></a>      <span class="st">"Congo"</span>,      <span class="dv">430</span>L,         <span class="dv">15</span>L,  <span class="st">"Africa"</span>,</span>
+<span id="cb18-10"><a></a>      <span class="st">"India"</span>,      <span class="dv">412</span>L,         <span class="dv">93</span>L,    <span class="st">"Asia"</span>,</span>
+<span id="cb18-11"><a></a>      <span class="st">"Kenya"</span>,      <span class="dv">376</span>L,         <span class="dv">30</span>L,  <span class="st">"Africa"</span>,</span>
+<span id="cb18-12"><a></a>  <span class="st">"Argentina"</span>,      <span class="dv">374</span>L,         <span class="dv">38</span>L, <span class="st">"America"</span>,</span>
+<span id="cb18-13"><a></a>    <span class="st">"Ecuador"</span>,      <span class="dv">372</span>L,         <span class="dv">47</span>L, <span class="st">"America"</span>,</span>
+<span id="cb18-14"><a></a>  <span class="st">"Venezuela"</span>,      <span class="dv">363</span>L,         <span class="dv">35</span>L, <span class="st">"America"</span>,</span>
+<span id="cb18-15"><a></a>   <span class="st">"Tanzania"</span>,      <span class="dv">359</span>L,         <span class="dv">41</span>L,  <span class="st">"Africa"</span></span>
+<span id="cb18-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="select" class="slide level2">
+<h2><code>select()</code></h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<h4 id="subset-variables">Subset variables</h4>
+<ul>
+<li>by name<br>
+</li>
+<li>by position<br>
+</li>
+<li>by type<br>
+</li>
+</ul>
+</div><div class="column" style="width:70%;">
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a></a>  <span class="fu">select</span>(cntry,</span>
+<span id="cb19-3"><a></a>         threatened) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  cntry     threatened
+  &lt;chr&gt;          &lt;int&gt;
+1 Indonesia        191
+2 Brasil            80
+3 China             73
+4 Mexico            96</code></pre>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="mutate" class="slide level2">
+<h2><code>mutate()</code></h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<h4 id="create-and-modify-columns">Create and modify columns</h4>
+<ul>
+<li>create new<br>
+</li>
+<li>overwrite<br>
+</li>
+</ul>
+</div><div class="column" style="width:65%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>mcountries <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a></a>  <span class="fu">select</span>(cntry, threatened) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a></a>  <span class="fu">mutate</span>(<span class="at">logthreat =</span> <span class="fu">log</span>(threatened)) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-4"><a></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  cntry     threatened logthreat
+  &lt;chr&gt;          &lt;int&gt;     &lt;dbl&gt;
+1 Indonesia        191      5.25
+2 Brasil            80      4.38
+3 China             73      4.29
+4 Mexico            96      4.56
+5 Peru              53      3.97</code></pre>
+</div>
+</div>
+</div></div>
+<p>We can control where the new column will appear with <code>.before</code> and <code>.after</code></p>
+</section>
+<section id="filter" class="slide level2">
+<h2><code>filter()</code></h2>
+<h4 id="subset-rows">Subset rows</h4>
+<p>Keep only the rows that meet a condition</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a></a>  <span class="fu">select</span>(cntry, species, threatened) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a></a>  <span class="fu">filter</span>(threatened <span class="sc">&gt;</span> <span class="dv">75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  cntry     species threatened
+  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
+1 Indonesia     670        191
+2 Brasil        648         80
+3 Mexico        523         96
+4 India         412         93</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="rename" class="slide level2">
+<h2><code>rename()</code></h2>
+<h4 id="modify-column-names">Modify column names</h4>
+<p>New name first <em>then</em> target column</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a></a>  <span class="fu">rename</span>(<span class="at">pais=</span>cntry,</span>
+<span id="cb25-3"><a></a>         <span class="at">especies=</span>species,</span>
+<span id="cb25-4"><a></a>         <span class="at">amenazadas=</span>threatened) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-5"><a></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  pais      especies amenazadas region 
+  &lt;chr&gt;        &lt;int&gt;      &lt;int&gt; &lt;chr&gt;  
+1 Indonesia      670        191 Asia   
+2 Brasil         648         80 America
+3 China          551         73 Asia   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="relocate" class="slide level2">
+<h2><code>relocate()</code></h2>
+<h4 id="move-variables-to-new-locations">Move variables to new locations</h4>
+<p>Use <code>.before</code> or <code>.after</code> to define placement</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a></a>  <span class="fu">relocate</span>(region, <span class="at">.after=</span>cntry) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cntry     region  species threatened
+  &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt;      &lt;int&gt;
+1 Indonesia Asia        670        191
+2 Brasil    America     648         80
+3 China     Asia        551         73</code></pre>
+</div>
+</div>
+</div>
+<p><em><code>.after</code> can also refer to positions</em></p>
+</section>
+<section id="exporting-tables" class="slide level2">
+<h2>Exporting tables</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a>relocatedAf <span class="ot">&lt;-</span> </span>
+<span id="cb29-2"><a></a> mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb29-3"><a></a>  <span class="fu">relocate</span>(region, <span class="at">.after=</span>cntry) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-4"><a></a>  <span class="fu">filter</span>(region<span class="sc">==</span><span class="st">"Africa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Export with a <code>write</code> function, providing an object and a file path e.g., <code>write.csv(relocatedAf,"Africa.csv")</code></p>
+</section></section>
+<section>
+<section id="wrangling-na-values" class="title-slide slide level1 center">
+<h1>Wrangling <code>NA</code> values</h1>
+
+</section>
+<section id="section-10" class="slide level2">
+<h2></h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Universities</a></li><li><a href="#tabset-2-2">Data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="cell">
+<div class="cell-output-display">
+<div id="hldlkwpqbx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hldlkwpqbx table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hldlkwpqbx thead, #hldlkwpqbx tbody, #hldlkwpqbx tfoot, #hldlkwpqbx tr, #hldlkwpqbx td, #hldlkwpqbx th {
+  border-style: none;
+}
+
+#hldlkwpqbx p {
+  margin: 0;
+  padding: 0;
+}
+
+#hldlkwpqbx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hldlkwpqbx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hldlkwpqbx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hldlkwpqbx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hldlkwpqbx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hldlkwpqbx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hldlkwpqbx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hldlkwpqbx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hldlkwpqbx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hldlkwpqbx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hldlkwpqbx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hldlkwpqbx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hldlkwpqbx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hldlkwpqbx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hldlkwpqbx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldlkwpqbx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hldlkwpqbx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hldlkwpqbx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hldlkwpqbx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldlkwpqbx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hldlkwpqbx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldlkwpqbx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hldlkwpqbx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldlkwpqbx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hldlkwpqbx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldlkwpqbx .gt_left {
+  text-align: left;
+}
+
+#hldlkwpqbx .gt_center {
+  text-align: center;
+}
+
+#hldlkwpqbx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hldlkwpqbx .gt_font_normal {
+  font-weight: normal;
+}
+
+#hldlkwpqbx .gt_font_bold {
+  font-weight: bold;
+}
+
+#hldlkwpqbx .gt_font_italic {
+  font-style: italic;
+}
+
+#hldlkwpqbx .gt_super {
+  font-size: 65%;
+}
+
+#hldlkwpqbx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hldlkwpqbx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hldlkwpqbx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hldlkwpqbx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hldlkwpqbx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hldlkwpqbx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hldlkwpqbx .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#hldlkwpqbx .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#hldlkwpqbx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="ID" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">ID</th>
+<th id="Institution" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">Institution</th>
+<th id="year" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">year</th>
+<th id="ZIP.code" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">ZIP.code</th>
+<th id="Highest.degree.offered" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">Highest.degree.offered</th>
+<th id="County.name" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">County.name</th>
+<th id="Religious.affiliation" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 14px" scope="col">Religious.affiliation</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">100663</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">University of Alabama at Birmingham</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">35294-0110</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Doctor's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">Not applicable</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">100690</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">Amridge University</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Doctor's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">Churches of Christ</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">100706</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">University of Alabama in Huntsville</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">35899</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Doctor's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">Not applicable</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">100751</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">The University of Alabama</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">35487-0166</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Doctor's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">Not applicable</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">NA</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">101541</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">Judson College</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">36756</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Bachelor's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">101587</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">University of West Alabama</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">35470</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Master's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">Not applicable</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">NA</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="ID" style="font-size: 14px">101693</td>
+<td class="gt_row gt_left" headers="Institution" style="font-size: 14px">University of Mobile</td>
+<td class="gt_row gt_center" headers="year" style="font-size: 14px">NA</td>
+<td class="gt_row gt_right" headers="ZIP.code" style="font-size: 14px">36613-2842</td>
+<td class="gt_row gt_left" headers="Highest.degree.offered" style="font-size: 14px">Master's degree</td>
+<td class="gt_row gt_center" headers="County.name" style="font-size: 14px">NA</td>
+<td class="gt_row gt_left" headers="Religious.affiliation" style="font-size: 14px">Southern Baptist</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a>universities <span class="ot">&lt;-</span> </span>
+<span id="cb30-2"><a></a>  tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb30-3"><a></a>        <span class="sc">~</span>ID,                          <span class="sc">~</span>Institution, <span class="sc">~</span>year,    <span class="sc">~</span>ZIP.code, <span class="sc">~</span>Highest.degree.offered, <span class="sc">~</span>County.name, <span class="sc">~</span>Religious.affiliation,</span>
+<span id="cb30-4"><a></a>         <span class="cn">NA</span>,                                    <span class="cn">NA</span>,    <span class="cn">NA</span>,           <span class="cn">NA</span>,                      <span class="cn">NA</span>,           <span class="cn">NA</span>,                     <span class="cn">NA</span>,</span>
+<span id="cb30-5"><a></a>    <span class="dv">100663</span>L, <span class="st">"University of Alabama at Birmingham"</span>,    <span class="cn">NA</span>, <span class="st">"35294-0110"</span>,       <span class="st">"Doctor's degree"</span>,           <span class="cn">NA</span>,       <span class="st">"Not applicable"</span>,</span>
+<span id="cb30-6"><a></a>    <span class="dv">100690</span>L,                  <span class="st">"Amridge University"</span>,    <span class="cn">NA</span>, <span class="cn">NA</span>,       <span class="st">"Doctor's degree"</span>,           <span class="cn">NA</span>,   <span class="st">"Churches of Christ"</span>,</span>
+<span id="cb30-7"><a></a>    <span class="dv">100706</span>L, <span class="st">"University of Alabama in Huntsville"</span>,    <span class="cn">NA</span>,      <span class="st">"35899"</span>,       <span class="st">"Doctor's degree"</span>,           <span class="cn">NA</span>,       <span class="st">"Not applicable"</span>,</span>
+<span id="cb30-8"><a></a>         <span class="cn">NA</span>,                                    <span class="cn">NA</span>,    <span class="cn">NA</span>,           <span class="cn">NA</span>,                      <span class="cn">NA</span>,           <span class="cn">NA</span>,                     <span class="cn">NA</span>,</span>
+<span id="cb30-9"><a></a>    <span class="dv">100751</span>L,           <span class="st">"The University of Alabama"</span>,    <span class="cn">NA</span>, <span class="st">"35487-0166"</span>,       <span class="st">"Doctor's degree"</span>,           <span class="cn">NA</span>,       <span class="st">"Not applicable"</span>,</span>
+<span id="cb30-10"><a></a>         <span class="cn">NA</span>,                                    <span class="cn">NA</span>,    <span class="cn">NA</span>,           <span class="cn">NA</span>,                      <span class="cn">NA</span>,           <span class="cn">NA</span>,                     <span class="cn">NA</span>,</span>
+<span id="cb30-11"><a></a>         <span class="cn">NA</span>,                                    <span class="cn">NA</span>,    <span class="cn">NA</span>,           <span class="cn">NA</span>,                      <span class="cn">NA</span>,           <span class="cn">NA</span>,                     <span class="cn">NA</span>,</span>
+<span id="cb30-12"><a></a>    <span class="dv">101541</span>L,                      <span class="st">"Judson College"</span>,    <span class="cn">NA</span>,      <span class="st">"36756"</span>,     <span class="st">"Bachelor's degree"</span>,           <span class="cn">NA</span>,              <span class="cn">NA</span>,</span>
+<span id="cb30-13"><a></a>    <span class="dv">101587</span>L,          <span class="st">"University of West Alabama"</span>,    <span class="cn">NA</span>,      <span class="st">"35470"</span>,       <span class="st">"Master's degree"</span>,           <span class="cn">NA</span>,       <span class="st">"Not applicable"</span>,</span>
+<span id="cb30-14"><a></a>         <span class="cn">NA</span>,                                    <span class="cn">NA</span>,    <span class="cn">NA</span>,           <span class="cn">NA</span>,                      <span class="cn">NA</span>,           <span class="cn">NA</span>,                     <span class="cn">NA</span>,</span>
+<span id="cb30-15"><a></a>    <span class="dv">101693</span>L,                <span class="st">"University of Mobile"</span>,    <span class="cn">NA</span>, <span class="st">"36613-2842"</span>,       <span class="st">"Master's degree"</span>,           <span class="cn">NA</span>,     <span class="st">"Southern Baptist"</span></span>
+<span id="cb30-16"><a></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="useful-functions-and-packages-for-missing-data" class="slide level2">
+<h2>Useful functions and packages for missing data</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a><span class="fu">library</span>(janitor)</span>
+<span id="cb31-2"><a></a><span class="fu">library</span>(naniar) <span class="co"># useful but not used in today's session</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="remove-empty-rows-or-columns" class="slide level2">
+<h2>Remove empty rows or columns</h2>
+<p>Remove rows or columns with all <code>NA</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a><span class="fu">library</span>(janitor)</span>
+<span id="cb32-2"><a></a>universities <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a></a>  <span class="fu">remove_empty</span>(<span class="fu">c</span>(<span class="st">"rows"</span>,<span class="st">"cols"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 5
+      ID Institution       ZIP.code Highest.degree.offered Religious.affiliation
+   &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;                  &lt;chr&gt;                
+1 100663 University of Al… 35294-0… Doctor's degree        Not applicable       
+2 100690 Amridge Universi… &lt;NA&gt;     Doctor's degree        Churches of Christ   
+3 100706 University of Al… 35899    Doctor's degree        Not applicable       
+4 100751 The University o… 35487-0… Doctor's degree        Not applicable       
+5 101541 Judson College    36756    Bachelor's degree      &lt;NA&gt;                 
+6 101587 University of We… 35470    Master's degree        Not applicable       
+7 101693 University of Mo… 36613-2… Master's degree        Southern Baptist     </code></pre>
+</div>
+</div>
+</section>
+<section id="filtering-rows-with-missing-data" class="slide level2">
+<h2>Filtering rows with missing data</h2>
+<p>Find rows in column that are NA</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>universities <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ZIP.code))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+      ID Institution        year  ZIP.code Highest.degree.offered County.name
+   &lt;int&gt; &lt;chr&gt;              &lt;lgl&gt; &lt;chr&gt;    &lt;chr&gt;                  &lt;lgl&gt;      
+1     NA &lt;NA&gt;               NA    &lt;NA&gt;     &lt;NA&gt;                   NA         
+2 100690 Amridge University NA    &lt;NA&gt;     Doctor's degree        NA         
+3     NA &lt;NA&gt;               NA    &lt;NA&gt;     &lt;NA&gt;                   NA         
+4     NA &lt;NA&gt;               NA    &lt;NA&gt;     &lt;NA&gt;                   NA         
+5     NA &lt;NA&gt;               NA    &lt;NA&gt;     &lt;NA&gt;                   NA         
+6     NA &lt;NA&gt;               NA    &lt;NA&gt;     &lt;NA&gt;                   NA         
+# ℹ 1 more variable: Religious.affiliation &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="filtering-rows-with-missing-data-1" class="slide level2">
+<h2>Filtering rows with missing data</h2>
+<p>Negate condition and discard NAs in variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>universities <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ZIP.code))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+      ID Institution           year  ZIP.code Highest.degree.offered County.name
+   &lt;int&gt; &lt;chr&gt;                 &lt;lgl&gt; &lt;chr&gt;    &lt;chr&gt;                  &lt;lgl&gt;      
+1 100663 University of Alabam… NA    35294-0… Doctor's degree        NA         
+2 100706 University of Alabam… NA    35899    Doctor's degree        NA         
+3 100751 The University of Al… NA    35487-0… Doctor's degree        NA         
+4 101541 Judson College        NA    36756    Bachelor's degree      NA         
+5 101587 University of West A… NA    35470    Master's degree        NA         
+6 101693 University of Mobile  NA    36613-2… Master's degree        NA         
+# ℹ 1 more variable: Religious.affiliation &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="replace-nas-with-something-else" class="slide level2">
+<h2>Replace NAs with something else</h2>
+<p><code>replace_na()</code> from <code>tidyr</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a>universities <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a></a>  <span class="fu">mutate</span>(<span class="at">ZIP.code=</span></span>
+<span id="cb38-3"><a></a>           <span class="fu">replace_na</span>(ZIP.code,<span class="st">"pending"</span>)) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 7
+      ID Institution           year  ZIP.code Highest.degree.offered County.name
+   &lt;int&gt; &lt;chr&gt;                 &lt;lgl&gt; &lt;chr&gt;    &lt;chr&gt;                  &lt;lgl&gt;      
+1     NA &lt;NA&gt;                  NA    pending  &lt;NA&gt;                   NA         
+2 100663 University of Alabam… NA    35294-0… Doctor's degree        NA         
+3 100690 Amridge University    NA    pending  Doctor's degree        NA         
+4 100706 University of Alabam… NA    35899    Doctor's degree        NA         
+# ℹ 1 more variable: Religious.affiliation &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="drop-rows-that-include-at-least-1-na" class="slide level2">
+<h2>Drop rows that include at least 1 <code>NA</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a></a>universities <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a></a>  <span class="fu">remove_empty</span>(<span class="st">"cols"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-3"><a></a>  <span class="fu">na.omit</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 5
+      ID Institution       ZIP.code Highest.degree.offered Religious.affiliation
+   &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;                  &lt;chr&gt;                
+1 100663 University of Al… 35294-0… Doctor's degree        Not applicable       
+2 100706 University of Al… 35899    Doctor's degree        Not applicable       
+3 100751 The University o… 35487-0… Doctor's degree        Not applicable       
+4 101587 University of We… 35470    Master's degree        Not applicable       
+5 101693 University of Mo… 36613-2… Master's degree        Southern Baptist     </code></pre>
+</div>
+</div>
+</section>
+<section id="practice---package-datasets-1" class="slide level2" data-background-color="#a4c5ff">
+<h2>Practice - Package datasets (1)</h2>
+<p><br></p>
+<p><span style="color:##7b7bb4; font-weight=bold"><code>data()</code></span> loads or lists available datasets in our installed packages <br></p>
+<p><span style="color:##7b7bb4; font-weight=bold"><code>data()</code></span> with no arguments shows every dataset currently available</p>
+</section>
+<section id="practice---package-datasets-2" class="slide level2" data-background-color="#a4c5ff">
+<h2>Practice - Package datasets (2)</h2>
+<p>We can also specify which package we want to examine for bundled data:</p>
+<p><span style="font-size: 1.5em; text-align: center"><code>data(package="ggplot2")</code></span></p>
+<p><span style="font-size: 1.5em; text-align: center"><code>data(package="datasets")</code></span></p>
+<p><span style="font-size: 1.5em; text-align: center"><code>data(package="tidyr")</code></span></p>
+</section>
+<section id="practice---package-datasets-3" class="slide level2" data-background-color="#a4c5ff">
+<h2>Practice - Package datasets (3)</h2>
+<p><br> We can use <code>data()</code> to load a particular dataset from a package (quoted or unquoted both work)</p>
+<blockquote>
+<p>Load the relevant package first!</p>
+</blockquote>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb42-2"><a></a><span class="fu">data</span>(economics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="practice---data-manipulation" class="slide level2" data-background-color="#a4c5ff">
+<h2>Practice - data manipulation</h2>
+<ul>
+<li><p>Load the <code>penguins</code> dataset from the <code>palmerpenguins</code> package</p></li>
+<li><p>Create a subset of the data with only <code>species</code>, <code>island</code>, and <code>flipper_length_mm</code></p></li>
+<li><p>How many individuals have flippers &gt; 195 mm in length?</p></li>
+<li><p>Create a new column with the flipper length in inches, place it before the column with the length in mm</p></li>
+</ul>
+</section></section>
+<section>
+<section id="working-across-multiple-columns" class="title-slide slide level1 center">
+<h1>Working <code>across()</code> multiple columns</h1>
+
+</section>
+<section id="operating-on-multiple-columns" class="slide level2">
+<h2>Operating on multiple columns</h2>
+<p><span style="font-size: 1.5em; text-align: center"><code>across()</code></span></p>
+<p><code>filter</code> or <code>mutate</code> multiple columns simultaneously</p>
+<ul>
+<li><p>By position (not recommended), name, or type</p></li>
+<li><p>Compound selections of columns<br>
+(e.g.&nbsp;<em>factor columns that contain “month” in their name</em>)</p></li>
+</ul>
+</section>
+<section id="across-arguments" class="slide level2">
+<h2><code>across()</code> arguments:</h2>
+<p><span style="color:green font-size: 1.3em">.cols</span> Columns to transform</p>
+<p><span style="color:pink font-size: 1.3em">.fns</span> Function to apply to each of the selected columns</p>
+<blockquote>
+<p>Expects a function, so function name and arguments can be passed separately (new preference is for anonymous functions, which we will cover later)</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p><br></p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(species, threatened), log)) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-3"><a></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cntry     species threatened region 
+  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
+1 Indonesia    6.51       5.25 Asia   
+2 Brasil       6.47       4.38 America
+3 China        6.31       4.29 Asia   </code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li><p><code>.cols</code> is a vector with the names of the two columns we’re interested in</p></li>
+<li><p><code>log</code> is the function to apply</p></li>
+</ul>
+</section>
+<section id="useful-column-selection-helpers" class="slide level2">
+<h2>Useful column selection helpers</h2>
+<p>To specify sets of columns, there are a number of useful helper functions that we can use alongside or instead of the <code>across</code> function.</p>
+<p><br></p>
+<div class="rightref">
+<div class="refbox">
+<p><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html">dplyr selection features and helpers</a></p>
+</div>
+</div>
+</section>
+<section id="everything" class="slide level2">
+<h2><code>everything()</code></h2>
+<p>Matches all variables</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb45-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.character)) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-3"><a></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cntry     species threatened region 
+  &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  
+1 Indonesia 670     191        Asia   
+2 Brasil    648     80         America
+3 China     551     73         Asia   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-11" class="slide level2">
+<h2><code>!</code></h2>
+<p>Take the complement of a set of variables (negate a selection)</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb47-2"><a></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(region,threatened)) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  cntry     species
+  &lt;chr&gt;       &lt;int&gt;
+1 Indonesia     670
+2 Brasil        648
+3 China         551
+4 Mexico        523
+5 Peru          467
+6 Congo         430</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="where" class="slide level2">
+<h2><code>where()</code></h2>
+<p>Selects variables for which a predicate function returns <code>TRUE</code></p>
+<blockquote>
+<p>e.g.&nbsp;subset or transform all numeric variables, determined by <code>is.numeric()</code></p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb49-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), log2)) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cntry     species threatened region 
+  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
+1 Indonesia    9.39       7.58 Asia   
+2 Brasil       9.34       6.32 America
+3 China        9.11       6.19 Asia   </code></pre>
+</div>
+</div>
+</section>
+<section id="section-12" class="slide level2">
+<h2><code>:</code></h2>
+<p>Select a range of consecutive variables</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a></a>  <span class="fu">select</span>(cntry<span class="sc">:</span>threatened) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  cntry     species threatened
+  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
+1 Indonesia     670        191
+2 Brasil        648         80
+3 China         551         73
+4 Mexico        523         96
+5 Peru          467         53
+6 Congo         430         15</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-13" class="slide level2">
+<h2><code>-</code></h2>
+<p>Exclude variables</p>
+<p>(return all elements except the one preceded by the subtraction operator)</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a></a>  <span class="fu">select</span>(<span class="sc">-</span>region) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  cntry     species threatened
+  &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
+1 Indonesia     670        191
+2 Brasil        648         80
+3 China         551         73</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="no-helpers-multiple-variables" class="slide level2">
+<h2>No helpers, multiple variables</h2>
+<p>Square root (<code>sqrt()</code>) of <code>species</code> and <code>threatened</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a>mcountries <span class="sc">%&gt;%</span>  </span>
+<span id="cb55-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(species, threatened), sqrt)) <span class="sc">%&gt;%</span> </span>
+<span id="cb55-3"><a></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  cntry     species threatened region 
+  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
+1 Indonesia    25.9      13.8  Asia   
+2 Brasil       25.5       8.94 America
+3 China        23.5       8.54 Asia   
+4 Mexico       22.9       9.80 America
+5 Peru         21.6       7.28 America
+6 Congo        20.7       3.87 Africa </code></pre>
+</div>
+</div>
+</section>
+<section id="square-root-sqrt-of-all-numeric-variables" class="slide level2">
+<h2>Square root (<code>sqrt()</code>) of all numeric variables</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), sqrt)) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-3"><a></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  cntry     species threatened region 
+  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  
+1 Indonesia    25.9      13.8  Asia   
+2 Brasil       25.5       8.94 America
+3 China        23.5       8.54 Asia   
+4 Mexico       22.9       9.80 America
+5 Peru         21.6       7.28 America
+6 Congo        20.7       3.87 Africa </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="we-can-also-use-selection-helpers-to-keepdiscard-variables" class="slide level2">
+<h2>We can also use selection helpers to keep/discard variables</h2>
+<p>Keep only columns of type numeric</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>mcountries <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-3"><a></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  species threatened
+    &lt;int&gt;      &lt;int&gt;
+1     670        191
+2     648         80
+3     551         73
+4     523         96
+5     467         53
+6     430         15</code></pre>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pivoting-data" class="title-slide slide level1 center">
+<h1>Pivoting data</h1>
+
+</section>
+<section id="section-14" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="wide-data">Wide Data</h3>
+<p>Human-readable<br>
+Easier entry<br>
+Easier interactive editing</p>
+</div><div class="column" style="width:50%;">
+<h3 id="long-data">Long Data</h3>
+<p>Often meets Tidy Data principles<br>
+Analysis-ready<br>
+Maps well to plot axes and aesthetics</p>
+</div></div>
+
+<img data-src="imgs/widelong.png" class="quarto-figure quarto-figure-left r-stretch" style="width:80.0%"></section>
+<section id="reshaping-data-with-tidyr" class="slide level2">
+<h2>Reshaping data with 📦 <code>tidyr</code></h2>
+<p><br> wide to long: <code>pivot_longer()</code></p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a></a><span class="fu">pivot_longer</span>(data, cols, names_to, </span>
+<span id="cb61-2"><a></a>             values_to)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p><br> long to wide: <code>pivot_wider()</code></p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a><span class="fu">pivot_longer</span>(data, cols, names_from,</span>
+<span id="cb62-2"><a></a>             values_from)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="section-15" class="slide level2">
+<h2></h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">dining options</a></li><li><a href="#tabset-3-2">Data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<div class="cell">
+<div class="cell-output-display">
+<div id="ymdkrzretg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ymdkrzretg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ymdkrzretg thead, #ymdkrzretg tbody, #ymdkrzretg tfoot, #ymdkrzretg tr, #ymdkrzretg td, #ymdkrzretg th {
+  border-style: none;
+}
+
+#ymdkrzretg p {
+  margin: 0;
+  padding: 0;
+}
+
+#ymdkrzretg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #F4F4F9;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ymdkrzretg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #F4F4F9;
+  border-bottom-width: 0;
+}
+
+#ymdkrzretg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #F4F4F9;
+  border-top-width: 0;
+}
+
+#ymdkrzretg .gt_heading {
+  background-color: #F4F4F9;
+  text-align: center;
+  border-bottom-color: #F4F4F9;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_col_heading {
+  color: #333333;
+  background-color: #F4F4F9;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ymdkrzretg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #F4F4F9;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ymdkrzretg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ymdkrzretg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ymdkrzretg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ymdkrzretg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ymdkrzretg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #F4F4F9;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ymdkrzretg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #F4F4F9;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ymdkrzretg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ymdkrzretg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ymdkrzretg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ymdkrzretg .gt_stub {
+  color: #333333;
+  background-color: #F4F4F9;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymdkrzretg .gt_stub_row_group {
+  color: #333333;
+  background-color: #F4F4F9;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ymdkrzretg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ymdkrzretg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ymdkrzretg .gt_summary_row {
+  color: #333333;
+  background-color: #F4F4F9;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymdkrzretg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ymdkrzretg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #F4F4F9;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymdkrzretg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ymdkrzretg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_footnotes {
+  color: #333333;
+  background-color: #F4F4F9;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymdkrzretg .gt_sourcenotes {
+  color: #333333;
+  background-color: #F4F4F9;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ymdkrzretg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymdkrzretg .gt_left {
+  text-align: left;
+}
+
+#ymdkrzretg .gt_center {
+  text-align: center;
+}
+
+#ymdkrzretg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ymdkrzretg .gt_font_normal {
+  font-weight: normal;
+}
+
+#ymdkrzretg .gt_font_bold {
+  font-weight: bold;
+}
+
+#ymdkrzretg .gt_font_italic {
+  font-style: italic;
+}
+
+#ymdkrzretg .gt_super {
+  font-size: 65%;
+}
+
+#ymdkrzretg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ymdkrzretg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ymdkrzretg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ymdkrzretg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ymdkrzretg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ymdkrzretg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ymdkrzretg .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#ymdkrzretg .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ymdkrzretg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="area_type" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">area_type</th>
+<th id="district" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">district</th>
+<th id="coffee_shops" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">coffee_shops</th>
+<th id="fast_food" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">fast_food</th>
+<th id="fish_chips" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 24px" scope="col">fish_chips</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="area_type" style="font-size: 24px">Residential</td>
+<td class="gt_row gt_left" headers="district" style="font-size: 24px">South</td>
+<td class="gt_row gt_right" headers="coffee_shops" style="font-size: 24px">2</td>
+<td class="gt_row gt_right" headers="fast_food" style="font-size: 24px">3</td>
+<td class="gt_row gt_right" headers="fish_chips" style="font-size: 24px">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="area_type" style="font-size: 24px">Commercial</td>
+<td class="gt_row gt_left" headers="district" style="font-size: 24px">North</td>
+<td class="gt_row gt_right" headers="coffee_shops" style="font-size: 24px">12</td>
+<td class="gt_row gt_right" headers="fast_food" style="font-size: 24px">6</td>
+<td class="gt_row gt_right" headers="fish_chips" style="font-size: 24px">4</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="area_type" style="font-size: 24px">Suburban</td>
+<td class="gt_row gt_left" headers="district" style="font-size: 24px">South</td>
+<td class="gt_row gt_right" headers="coffee_shops" style="font-size: 24px">2</td>
+<td class="gt_row gt_right" headers="fast_food" style="font-size: 24px">4</td>
+<td class="gt_row gt_right" headers="fish_chips" style="font-size: 24px">3</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="area_type" style="font-size: 24px">Rural</td>
+<td class="gt_row gt_left" headers="district" style="font-size: 24px">East</td>
+<td class="gt_row gt_right" headers="coffee_shops" style="font-size: 24px">0</td>
+<td class="gt_row gt_right" headers="fast_food" style="font-size: 24px">2</td>
+<td class="gt_row gt_right" headers="fish_chips" style="font-size: 24px">0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a></a>dining <span class="ot">&lt;-</span> </span>
+<span id="cb63-2"><a></a>tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb63-3"><a></a>     <span class="sc">~</span>area_type, <span class="sc">~</span>district, <span class="sc">~</span>coffee_shops, <span class="sc">~</span>fast_food, <span class="sc">~</span>fish_chips,</span>
+<span id="cb63-4"><a></a>  <span class="st">"Residential"</span>,   <span class="st">"South"</span>,            <span class="dv">2</span>L,         <span class="dv">3</span>L,          <span class="dv">1</span>L,</span>
+<span id="cb63-5"><a></a>   <span class="st">"Commercial"</span>,   <span class="st">"North"</span>,           <span class="dv">12</span>L,         <span class="dv">6</span>L,          <span class="dv">4</span>L,</span>
+<span id="cb63-6"><a></a>     <span class="st">"Suburban"</span>,   <span class="st">"South"</span>,            <span class="dv">2</span>L,         <span class="dv">4</span>L,          <span class="dv">3</span>L,</span>
+<span id="cb63-7"><a></a>        <span class="st">"Rural"</span>,    <span class="st">"East"</span>,            <span class="dv">0</span>L,         <span class="dv">2</span>L,          <span class="dv">0</span>L</span>
+<span id="cb63-8"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p><span style="font-size: 1.2em; text-align: center">Variables:</span></p>
+<p>area type, district, and what else?</p>
+</section>
+<section id="wide-to-long" class="slide level2">
+<h2>Wide to long</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a>dining_long <span class="ot">&lt;-</span> dining <span class="sc">%&gt;%</span></span>
+<span id="cb64-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb64-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
+<span id="cb64-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
+<span id="cb64-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><code>cols</code></strong> Which columns have data in their names</p>
+<p><strong><code>names_to</code></strong> Name for the new column to be created from <code>cols</code></p>
+<p><strong><code>values_to</code></strong> Name of the column to be created from the contents of the cells in <strong><code>cols</code></strong></p>
+</section>
+<section id="section-16" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a></a>dining <span class="sc">%&gt;%</span></span>
+<span id="cb65-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb65-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
+<span id="cb65-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
+<span id="cb65-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-17" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a>dining <span class="sc">%&gt;%</span></span>
+<span id="cb66-2"><a></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb66-3"><a></a>    <span class="at">cols =</span> <span class="fu">c</span>(coffee_shops, fast_food, fish_chips),</span>
+<span id="cb66-4"><a></a>    <span class="at">names_to =</span> <span class="st">"restaurant_type"</span>,</span>
+<span id="cb66-5"><a></a>    <span class="at">values_to =</span> <span class="st">"n_restaurants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 4
+   area_type   district restaurant_type n_restaurants
+   &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;                   &lt;int&gt;
+ 1 Residential South    coffee_shops                2
+ 2 Residential South    fast_food                   3
+ 3 Residential South    fish_chips                  1
+ 4 Commercial  North    coffee_shops               12
+ 5 Commercial  North    fast_food                   6
+ 6 Commercial  North    fish_chips                  4
+ 7 Suburban    South    coffee_shops                2
+ 8 Suburban    South    fast_food                   4
+ 9 Suburban    South    fish_chips                  3
+10 Rural       East     coffee_shops                0
+11 Rural       East     fast_food                   2
+12 Rural       East     fish_chips                  0</code></pre>
+</div>
+</div>
+</section>
+<section id="long-to-wide" class="slide level2">
+<h2>Long to wide</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a>dining_long <span class="sc">%&gt;%</span> </span>
+<span id="cb68-2"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> restaurant_type, </span>
+<span id="cb68-3"><a></a>              <span class="at">values_from =</span> n_restaurants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><code>names_from</code></strong> Which columns’ values will be used for new <em>column names</em></p>
+<p><strong><code>values_from</code></strong> Which column has the <em>cell values</em> for the new output columns</p>
+</section>
+<section id="section-18" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a>dining_long <span class="sc">%&gt;%</span> </span>
+<span id="cb69-2"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> restaurant_type, </span>
+<span id="cb69-3"><a></a>              <span class="at">values_from =</span> n_restaurants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  area_type   district coffee_shops fast_food fish_chips
+  &lt;chr&gt;       &lt;chr&gt;           &lt;int&gt;     &lt;int&gt;      &lt;int&gt;
+1 Residential South               2         3          1
+2 Commercial  North              12         6          4
+3 Suburban    South               2         4          3
+4 Rural       East                0         2          0</code></pre>
+</div>
+</div>
+</section>
+<section id="practice---pivoting" class="slide level2" data-background-color="#a4c5ff">
+<h2>Practice - Pivoting</h2>
+<ul>
+<li><p>Load the “<code>gene_expression.csv</code>” file This table contains simulated gene expression values (arbitrary units) for five different fish measured at six time points and sampled from two tissues.</p></li>
+<li><p>Pivot the data (wide to long and back to wide)</p></li>
+</ul>
+</section></section>
+<section id="questions-and-discussion" class="title-slide slide level1 center">
+<h1>Questions and discussion</h1>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: true,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

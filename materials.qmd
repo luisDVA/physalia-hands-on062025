@@ -1,0 +1,35 @@
+---
+title: "Course materials"
+toc-title: Contents
+---
+
+## Presentations
+
+These web-based HTML slide decks have an interactive table of contents (button on bottom left corner). Use the F key for full screen mode.
+
+### Monday
+
+[Introduction](slides/introduction.qmd){.external target="_blank"}
+
+- Example spreadsheet for import: [petshops.xlsx](examples/petshop.xlsx)
+
+### Tuesday
+
+[Data preparation](slides/preparation.qmd){.external target="_blank"}
+
+- Example table for Data Preparation exercise [fish gene expression csv file](examples/gene_expression.csv)
+
+[Data Visualization](slides/visualization.qmd){.external target="_blank"}
+
+- Plotting scripts [compressed file](examples/course_scripts/plotting_scripts.zip) 
+
+
+### Wednesday
+
+[Programming and reproducibility](slides/programming.qmd){.external target="_blank"}
+
+[Quarto Documents](slides/quarto.qmd){.external target="_blank"}
+
+- example [report](examples/_possumreport.qmd)
+- example [presentation](examples/_petpresentation.qmd)
+

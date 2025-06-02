@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-ed09741bc9a4bc7923efc7a27dab3f48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
+
+  <meta name="author" content="Luis D. Verde Arregoitia">
+  <title>Practical intro to R – Programming and reproducibility</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d042da4d4448142c59ee76d0f1bb8080.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Programming and reproducibility</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Luis D. Verde Arregoitia 
+</div>
+</div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today:</h2>
+<p>– Custom setups</p>
+<p>– Shortcuts and tools for increased efficiency</p>
+<p>– Iteration and vectorization to avoid repeating ourselves</p>
+<p>– Lists</p>
+</section>
+<section id="customization" class="slide level2">
+<h2>Customization</h2>
+<ul>
+<li>IDE themes: <a href="https://tmtheme-editor.glitch.me/">tmThemeEditor</a> by Allen Bargi</li>
+</ul>
+<div style="background-color: #3F3B3B; box-shadow: 10px 10px grey;  padding: 25px">
+<div class="neonText">
+<blockquote>
+<p>No one at the coffee shop will know you’re serious unless you have a dark background</p>
+</blockquote>
+</div>
+<div style="text-align: right">
+<p><span style="color:#ef798a">Jared Lander</span></p>
+<p>📼 <a href="https://www.youtube.com/watch?v=gjpNEVcG1nU">R: Then and now</a></p>
+</div>
+</div>
+<ul>
+<li><p>Fonts and ligatures - 🔗 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts</a></p></li>
+<li><p>Pane Layouts</p></li>
+</ul>
+</section>
+<section>
+<section id="shortcuts-and-tools-for-efficient-coding" class="title-slide slide level1 center">
+<h1>Shortcuts and tools for efficient coding</h1>
+
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+
+<img data-src="imgs/remote-work-airplane-laptop.jpg" class="r-stretch"></section>
+<section id="coding-tricks" class="slide level2">
+<h2>Coding tricks</h2>
+<p><span style="font-size: 1.3em; text-align: center">Ctrl == ⌘ Command , Alt == ⌥ Option</span></p>
+<ul>
+<li>Multiline cursor (<code>ctrl</code>+<code>alt</code>+<code>up</code>) or (<code>ctrl</code>+<code>alt</code>+<code>down</code>)</li>
+<li>dismiss with <code>escape</code> key</li>
+</ul>
+</section>
+<section id="shortcuts" class="slide level2">
+<h2>Shortcuts</h2>
+<ul>
+<li>‘pipe’ (<code>ctrl</code>+<code>shift</code>+<code>m</code>)</li>
+<li>asignment operator (<code>alt</code>+<code>-</code>)</li>
+<li>drag line (<code>alt</code>+<code>up</code>) or (<code>alt</code>+<code>down</code>)</li>
+<li>run (<code>ctrl</code>+<code>enter</code>)</li>
+<li>convert to comment (<code>ctrl</code> + <code>shift</code> + <code>c</code>)</li>
+</ul>
+<div class="rightref">
+<div class="refbox">
+<p><a href="https://appsilon.com/rstudio-shortcuts-and-tips/">RStudio Shortcuts and Tips (2021)</a></p>
+</div>
+</div>
+</section>
+<section id="more-shortcuts" class="slide level2">
+<h2>More shortcuts</h2>
+<ul>
+<li>Shift focus
+<ul>
+<li>(<code>ctrl</code>+<code>1</code> through <code>8</code>)</li>
+<li>Maximize panes (<code>ctrl</code>+<code>shift</code>+<code>1</code> through <code>8</code>)</li>
+</ul></li>
+</ul>
+
+<img data-src="imgs/movingfocus.gif" style="width:48.0%" class="r-stretch"></section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p>See help <span style="color: orange">?</span> o <span style="color: orange">F1</span></p>
+<p>Open object in viewer</p>
+<p><span style="color: orange"><code>ctrl</code> + click</span></p>
+<h3 id="open-working-directory">Open working directory</h3>
+<p><span style="color: orange"><code>shell.exec(getwd())</code></span> Windows <span style="color: orange"><code>browseURL(getwd())</code></span> Linux</p>
+</section></section>
+<section>
+<section id="iteration" class="title-slide slide level1 center">
+<h1>Iteration</h1>
+
+</section>
+<section id="performing-a-process-repeatedly" class="slide level2">
+<h2>Performing a process repeatedly</h2>
+<p>Any time we copy and paste code, and then edit, we are adding unnecessary steps that add room for errors</p>
+<p><br></p>
+<div class="rightref">
+<div class="refbox">
+<p>Nick Holt (2017)<br>
+<a href="https://nick-holt.github.io/2017/12/function-iterations-in-r/">Function Iterations in R</a></p>
+</div>
+</div>
+</section>
+<section id="challengebrainstorm" class="slide level2" data-background-color="#a4c5ff">
+<h2>Challenge/brainstorm</h2>
+<p>Load the <code>possum</code> dataset from the <code>openintro</code> package</p>
+<blockquote>
+<p>How could we identify the oldest male possums for each of the two populations?</p>
+</blockquote>
+<p><em>no code needed for this</em></p>
+</section>
+<section id="grouped-data" class="slide level2">
+<h2>Grouped data</h2>
+<p>Most data analysis and manipulations tasks can be approached using the <span style="color: purple">“split-apply-combine”</span> paradigm:</p>
+<ul>
+<li>split the data into groups</li>
+<li>apply some analysis to each group</li>
+<li>combine the results</li>
+</ul>
+<div class="rightref">
+<div class="refbox">
+<p>Data Carpentry (2018)<br>
+<a href="https://datacarpentry.org/R-genomics/04-dplyr.html">Aggregating and analyzing data with dplyr</a></p>
+<p>Hadley Wickham (2011)<br>
+<a href="https://doi.org/10.18637/jss.v040.i01">The split-apply-combine strategy for data analysis</a></p>
+</div>
+</div>
+</section>
+<section id="dplyrgroup_by" class="slide level2">
+<h2><code>dplyr::group_by()</code></h2>
+<ul>
+<li>Define groups with one or more variables<br>
+</li>
+<li>Stratify a data frame</li>
+<li>equivalent to <code>aggregate()</code> in base R</li>
+</ul>
+<p><img data-src="imgs/groupby.PNG" style="width:64.0%" alt="image by Ruben Sanchez"><br>
+</p>
+</section>
+<section id="aggregating-or-manipulating-grouped-data" class="slide level2">
+<h2>Aggregating or manipulating grouped data</h2>
+<p>Once <code>group_by()</code> creates a “grouped” version of a table, <code>dplyr</code> functions will manipulate each “group” separately and then combine the results.</p>
+<div class="rightref">
+<div class="refbox">
+<p>RStudio (2021)<br>
+<a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf">Data transformation with dplyr cheatsheet</a></p>
+</div>
+</div>
+</section>
+<section id="within-groups-we-can" class="slide level2">
+<h2>Within groups, we can:</h2>
+<ul>
+<li><p>summarize group values (mean, median)</p></li>
+<li><p>extract the first or last <em>n</em> rows from each group</p></li>
+<li><p>find the minimum or maximum values</p></li>
+<li><p>remove duplicated rows</p></li>
+<li><p>count records, etc.</p></li>
+</ul>
+</section>
+<section id="mammal-sleep-data" class="slide level2">
+<h2>mammal sleep data</h2>
+<p>Traits for 83 species of mammals in relation to their sleeping habits. From Savage &amp; West (2007), bundled with <code>ggplot2</code></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="ucnjespivy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ucnjespivy table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ucnjespivy thead, #ucnjespivy tbody, #ucnjespivy tfoot, #ucnjespivy tr, #ucnjespivy td, #ucnjespivy th {
+  border-style: none;
+}
+
+#ucnjespivy p {
+  margin: 0;
+  padding: 0;
+}
+
+#ucnjespivy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ucnjespivy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ucnjespivy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ucnjespivy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ucnjespivy .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ucnjespivy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ucnjespivy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ucnjespivy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ucnjespivy .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ucnjespivy .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ucnjespivy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ucnjespivy .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ucnjespivy .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ucnjespivy .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ucnjespivy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ucnjespivy .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ucnjespivy .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ucnjespivy .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ucnjespivy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ucnjespivy .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ucnjespivy .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ucnjespivy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ucnjespivy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ucnjespivy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ucnjespivy .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ucnjespivy .gt_left {
+  text-align: left;
+}
+
+#ucnjespivy .gt_center {
+  text-align: center;
+}
+
+#ucnjespivy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ucnjespivy .gt_font_normal {
+  font-weight: normal;
+}
+
+#ucnjespivy .gt_font_bold {
+  font-weight: bold;
+}
+
+#ucnjespivy .gt_font_italic {
+  font-style: italic;
+}
+
+#ucnjespivy .gt_super {
+  font-size: 65%;
+}
+
+#ucnjespivy .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ucnjespivy .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ucnjespivy .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ucnjespivy .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ucnjespivy .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ucnjespivy .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ucnjespivy .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">name</th>
+<th id="genus" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">genus</th>
+<th id="vore" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">vore</th>
+<th id="order" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">order</th>
+<th id="conservation" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">conservation</th>
+<th id="sleep_total" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">sleep_total</th>
+<th id="sleep_rem" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">sleep_rem</th>
+<th id="sleep_cycle" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">sleep_cycle</th>
+<th id="awake" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">awake</th>
+<th id="brainwt" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">brainwt</th>
+<th id="bodywt" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-size: 20px" scope="col">bodywt</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="name" style="font-size: 20px">Cheetah</td>
+<td class="gt_row gt_left" headers="genus" style="font-size: 20px">Acinonyx</td>
+<td class="gt_row gt_left" headers="vore" style="font-size: 20px">carni</td>
+<td class="gt_row gt_left" headers="order" style="font-size: 20px">Carnivora</td>
+<td class="gt_row gt_left" headers="conservation" style="font-size: 20px">lc</td>
+<td class="gt_row gt_right" headers="sleep_total" style="font-size: 20px">12.1</td>
+<td class="gt_row gt_right" headers="sleep_rem" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="sleep_cycle" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="awake" style="font-size: 20px">11.9</td>
+<td class="gt_row gt_right" headers="brainwt" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="bodywt" style="font-size: 20px">50.000</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="name" style="font-size: 20px">Owl monkey</td>
+<td class="gt_row gt_left" headers="genus" style="font-size: 20px">Aotus</td>
+<td class="gt_row gt_left" headers="vore" style="font-size: 20px">omni</td>
+<td class="gt_row gt_left" headers="order" style="font-size: 20px">Primates</td>
+<td class="gt_row gt_left" headers="conservation" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="sleep_total" style="font-size: 20px">17.0</td>
+<td class="gt_row gt_right" headers="sleep_rem" style="font-size: 20px">1.8</td>
+<td class="gt_row gt_right" headers="sleep_cycle" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="awake" style="font-size: 20px">7.0</td>
+<td class="gt_row gt_right" headers="brainwt" style="font-size: 20px">0.01550</td>
+<td class="gt_row gt_right" headers="bodywt" style="font-size: 20px">0.480</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="name" style="font-size: 20px">Mountain beaver</td>
+<td class="gt_row gt_left" headers="genus" style="font-size: 20px">Aplodontia</td>
+<td class="gt_row gt_left" headers="vore" style="font-size: 20px">herbi</td>
+<td class="gt_row gt_left" headers="order" style="font-size: 20px">Rodentia</td>
+<td class="gt_row gt_left" headers="conservation" style="font-size: 20px">nt</td>
+<td class="gt_row gt_right" headers="sleep_total" style="font-size: 20px">14.4</td>
+<td class="gt_row gt_right" headers="sleep_rem" style="font-size: 20px">2.4</td>
+<td class="gt_row gt_right" headers="sleep_cycle" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="awake" style="font-size: 20px">9.6</td>
+<td class="gt_row gt_right" headers="brainwt" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="bodywt" style="font-size: 20px">1.350</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="name" style="font-size: 20px">Greater short-tailed shrew</td>
+<td class="gt_row gt_left" headers="genus" style="font-size: 20px">Blarina</td>
+<td class="gt_row gt_left" headers="vore" style="font-size: 20px">omni</td>
+<td class="gt_row gt_left" headers="order" style="font-size: 20px">Soricomorpha</td>
+<td class="gt_row gt_left" headers="conservation" style="font-size: 20px">lc</td>
+<td class="gt_row gt_right" headers="sleep_total" style="font-size: 20px">14.9</td>
+<td class="gt_row gt_right" headers="sleep_rem" style="font-size: 20px">2.3</td>
+<td class="gt_row gt_right" headers="sleep_cycle" style="font-size: 20px">0.1333333</td>
+<td class="gt_row gt_right" headers="awake" style="font-size: 20px">9.1</td>
+<td class="gt_row gt_right" headers="brainwt" style="font-size: 20px">0.00029</td>
+<td class="gt_row gt_right" headers="bodywt" style="font-size: 20px">0.019</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="name" style="font-size: 20px">Cow</td>
+<td class="gt_row gt_left" headers="genus" style="font-size: 20px">Bos</td>
+<td class="gt_row gt_left" headers="vore" style="font-size: 20px">herbi</td>
+<td class="gt_row gt_left" headers="order" style="font-size: 20px">Artiodactyla</td>
+<td class="gt_row gt_left" headers="conservation" style="font-size: 20px">domesticated</td>
+<td class="gt_row gt_right" headers="sleep_total" style="font-size: 20px">4.0</td>
+<td class="gt_row gt_right" headers="sleep_rem" style="font-size: 20px">0.7</td>
+<td class="gt_row gt_right" headers="sleep_cycle" style="font-size: 20px">0.6666667</td>
+<td class="gt_row gt_right" headers="awake" style="font-size: 20px">20.0</td>
+<td class="gt_row gt_right" headers="brainwt" style="font-size: 20px">0.42300</td>
+<td class="gt_row gt_right" headers="bodywt" style="font-size: 20px">600.000</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="name" style="font-size: 20px">Three-toed sloth</td>
+<td class="gt_row gt_left" headers="genus" style="font-size: 20px">Bradypus</td>
+<td class="gt_row gt_left" headers="vore" style="font-size: 20px">herbi</td>
+<td class="gt_row gt_left" headers="order" style="font-size: 20px">Pilosa</td>
+<td class="gt_row gt_left" headers="conservation" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="sleep_total" style="font-size: 20px">14.4</td>
+<td class="gt_row gt_right" headers="sleep_rem" style="font-size: 20px">2.2</td>
+<td class="gt_row gt_right" headers="sleep_cycle" style="font-size: 20px">0.7666667</td>
+<td class="gt_row gt_right" headers="awake" style="font-size: 20px">9.6</td>
+<td class="gt_row gt_right" headers="brainwt" style="font-size: 20px">NA</td>
+<td class="gt_row gt_right" headers="bodywt" style="font-size: 20px">3.850</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="maximum-brainwt-for-each-order" class="slide level2">
+<h2>maximum <code>brainwt</code> for each order</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>msleep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(order) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a></a>  <span class="fu">slice_max</span>(brainwt,<span class="at">n=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 21 × 11
+# Groups:   order [19]
+   name   genus vore  order conservation sleep_total sleep_rem sleep_cycle awake
+   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+ 1 Tenrec Tenr… omni  Afro… &lt;NA&gt;                15.6       2.3      NA       8.4
+ 2 Cow    Bos   herbi Arti… domesticated         4         0.7       0.667  20  
+ 3 Gray … Hali… carni Carn… lc                   6.2       1.5      NA      17.8
+ 4 Pilot… Glob… carni Ceta… cd                   2.7       0.1      NA      21.4
+ 5 Commo… Phoc… carni Ceta… vu                   5.6      NA        NA      18.4
+ 6 Bottl… Turs… carni Ceta… &lt;NA&gt;                 5.2      NA        NA      18.8
+ 7 Big b… Epte… inse… Chir… lc                  19.7       3.9       0.117   4.3
+ 8 Giant… Prio… inse… Cing… en                  18.1       6.1      NA       5.9
+ 9 North… Dide… omni  Dide… lc                  18         4.9       0.333   6  
+10 Phala… Phal… &lt;NA&gt;  Dipr… &lt;NA&gt;                13.7       1.8      NA      10.3
+# ℹ 11 more rows
+# ℹ 2 more variables: brainwt &lt;dbl&gt;, bodywt &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="one-row-sampled-randomly-from-each-order" class="slide level2">
+<h2>One row sampled randomly from each order</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>msleep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(order) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a></a>  <span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 11
+# Groups:   order [19]
+   name   genus vore  order conservation sleep_total sleep_rem sleep_cycle awake
+   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+ 1 "Tenr… Tenr… omni  Afro… &lt;NA&gt;                15.6       2.3      NA       8.4
+ 2 "Cow"  Bos   herbi Arti… domesticated         4         0.7       0.667  20  
+ 3 "Chee… Acin… carni Carn… lc                  12.1      NA        NA      11.9
+ 4 "Pilo… Glob… carni Ceta… cd                   2.7       0.1      NA      21.4
+ 5 "Litt… Myot… inse… Chir… &lt;NA&gt;                19.9       2         0.2     4.1
+ 6 "Gian… Prio… inse… Cing… en                  18.1       6.1      NA       5.9
+ 7 "Nort… Dide… omni  Dide… lc                  18         4.9       0.333   6  
+ 8 "Poto… Poto… herbi Dipr… &lt;NA&gt;                11.1       1.5      NA      12.9
+ 9 "Dese… Para… &lt;NA&gt;  Erin… lc                  10.3       2.7      NA      13.7
+10 "Rock… Proc… &lt;NA&gt;  Hyra… lc                   5.4       0.5      NA      18.6
+11 "Rabb… Oryc… herbi Lago… domesticated         8.4       0.9       0.417  15.6
+12 "Shor… Tach… inse… Mono… &lt;NA&gt;                 8.6      NA        NA      15.4
+13 "Hors… Equus herbi Peri… domesticated         2.9       0.6       1      21.1
+14 "Thre… Brad… herbi Pilo… &lt;NA&gt;                14.4       2.2       0.767   9.6
+15 "Babo… Papio omni  Prim… &lt;NA&gt;                 9.4       1         0.667  14.6
+16 "Afri… Loxo… herbi Prob… vu                   3.3      NA        NA      20.7
+17 "Vole… Micr… herbi Rode… &lt;NA&gt;                12.8      NA        NA      11.2
+18 "Tree… Tupa… omni  Scan… &lt;NA&gt;                 8.9       2.6       0.233  15.1
+19 "Less… Cryp… omni  Sori… lc                   9.1       1.4       0.15   14.9
+# ℹ 2 more variables: brainwt &lt;dbl&gt;, bodywt &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="summarize-values" class="slide level2">
+<h2>summarize values</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>msleep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(order) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a></a>  <span class="fu">summarize</span>(<span class="at">median_slp =</span> <span class="fu">median</span>(sleep_total),</span>
+<span id="cb5-3"><a></a>            <span class="at">mean_brainwt=</span><span class="fu">mean</span>(brainwt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 3
+   order           median_slp mean_brainwt
+   &lt;chr&gt;                &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Afrosoricida          15.6     0.0026  
+ 2 Artiodactyla           3.9    NA       
+ 3 Carnivora             10.2    NA       
+ 4 Cetacea                5.2    NA       
+ 5 Chiroptera            19.8     0.000275
+ 6 Cingulata             17.8     0.0459  
+ 7 Didelphimorphia       18.7    NA       
+ 8 Diprotodontia         12.4    NA       
+ 9 Erinaceomorpha        10.2     0.00295 
+10 Hyracoidea             5.4     0.0152  
+11 Lagomorpha             8.4     0.0121  
+12 Monotremata            8.6     0.025   
+13 Perissodactyla         3.1     0.414   
+14 Pilosa                14.4    NA       
+15 Primates               9.9    NA       
+16 Proboscidea            3.6     5.16    
+17 Rodentia              12.9    NA       
+18 Scandentia             8.9     0.0025  
+19 Soricomorpha          10.3     0.000592</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="new-notation" class="slide level2">
+<h2>New notation</h2>
+<p>Eliminate the need for <code>group_by()</code> and then <code>ungroup()</code> with <code>by</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>msleep <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">1</span>,<span class="at">by=</span>order)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 11
+   name   genus vore  order conservation sleep_total sleep_rem sleep_cycle awake
+   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+ 1 Domes… Felis carni Carn… domesticated        12.5       3.2       0.417  11.5
+ 2 Patas… Eryt… omni  Prim… lc                  10.9       1.1      NA      13.1
+ 3 Vespe… Calo… &lt;NA&gt;  Rode… &lt;NA&gt;                 7        NA        NA      17  
+ 4 Star-… Cond… omni  Sori… lc                  10.3       2.2      NA      13.7
+ 5 Pig    Sus   omni  Arti… domesticated         9.1       2.4       0.5    14.9
+ 6 Three… Brad… herbi Pilo… &lt;NA&gt;                14.4       2.2       0.767   9.6
+ 7 Giant… Prio… inse… Cing… en                  18.1       6.1      NA       5.9
+ 8 Tree … Dend… herbi Hyra… lc                   5.3       0.5      NA      18.7
+ 9 Thick… Lutr… carni Dide… lc                  19.4       6.6      NA       4.6
+10 Afric… Loxo… herbi Prob… vu                   3.3      NA        NA      20.7
+11 Big b… Epte… inse… Chir… lc                  19.7       3.9       0.117   4.3
+12 Horse  Equus herbi Peri… domesticated         2.9       0.6       1      21.1
+13 Deser… Para… &lt;NA&gt;  Erin… lc                  10.3       2.7      NA      13.7
+14 Commo… Phoc… carni Ceta… vu                   5.6      NA        NA      18.4
+15 Rabbit Oryc… herbi Lago… domesticated         8.4       0.9       0.417  15.6
+16 Potor… Poto… herbi Dipr… &lt;NA&gt;                11.1       1.5      NA      12.9
+17 Short… Tach… inse… Mono… &lt;NA&gt;                 8.6      NA        NA      15.4
+18 Tenrec Tenr… omni  Afro… &lt;NA&gt;                15.6       2.3      NA       8.4
+19 Tree … Tupa… omni  Scan… &lt;NA&gt;                 8.9       2.6       0.233  15.1
+# ℹ 2 more variables: brainwt &lt;dbl&gt;, bodywt &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="loops-for-loops" class="slide level2">
+<h2>Loops (<em>for loops</em>)</h2>
+<ul>
+<li>Still useful</li>
+<li>most of the time we do not have to write them ourselves</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="imgs/Homer.png"></p>
+</div><div class="column" style="width:60%;">
+<div class="rightref">
+<div class="refbox">
+<p>Jenny Bryan<br>
+<a href="https://jennybc.github.io/purrr-tutorial/index.html">purrr tutorial</a><br>
+<a href="https://speakerdeck.com/jennybc/data-rectangling">Data Rectangling</a><br>
+<a href="https://speakerdeck.com/jennybc/purrr-workshop">purrr workshop</a></p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="loops" class="slide level2">
+<h2>Loops</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="cf">for</span> (value <span class="cf">in</span> sequence){</span>
+<span id="cb9-2"><a></a>   <span class="fu">statement</span>(s)</span>
+<span id="cb9-3"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Execute a set of <em>statements</em>, once for each item in a vector, array, list, etc. and stop when the last element is reached.</p>
+</div><div class="column" style="width:42%;">
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>){</span>
+<span id="cb10-2"><a></a>  <span class="fu">print</span>(x)</span>
+<span id="cb10-3"><a></a>} </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7</code></pre>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="practice" class="slide level2" data-background-color="#a4c5ff">
+<h2>Practice</h2>
+<p>Write a for loop to print every letter in the alphabet in lowercase and in reverse alphabetical order (e.g.&nbsp;z,y,x,w…) <br></p>
+<p><strong>Hints:</strong></p>
+<ul>
+<li>R has built-in “letters” vectors?</li>
+<li>What do we want to to <strong>for every element</strong> in our sequence?</li>
+<li>Which function “prints” text to the console?</li>
+</ul>
+</section>
+<section id="loops-and-groups" class="slide level2">
+<h2>Loops and groups</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>msleep <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a></a>  <span class="fu">group_by</span>(order) <span class="sc">%&gt;%</span> <span class="co"># for each order</span></span>
+<span id="cb12-3"><a></a>  <span class="fu">slice_sample</span>(<span class="dv">1</span>) <span class="co"># statement to execute </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Everything happens within the data frame</p>
+</section>
+<section id="vectorization-is-our-friend" class="slide level2">
+<h2>Vectorization is our friend</h2>
+<p>Operations occur in parallel on all elements, rather than on individual components in sequence</p>
+<h4 id="what-will-be-the-result-here">What will be the result here?</h4>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">8</span>)</span>
+<span id="cb13-2"><a></a>x <span class="sc">&gt;</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="logical-operators-are-vectorized-many-other-fns-too" class="slide level2">
+<h2>Logical operators are vectorized (many other fns too!)</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">8</span>)</span>
+<span id="cb14-2"><a></a>x <span class="sc">&gt;</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE  TRUE FALSE  TRUE  TRUE</code></pre>
+</div>
+</div>
+</div>
+<p>We don’t need to compare each element</p>
+</section>
+<section class="slide level2">
+
+
+<img data-src="imgs/dogscopy.jpg" style="width:36.0%" class="r-stretch quarto-figure-center"><p class="caption">American Greetings</p></section></section>
+<section>
+<section id="functions" class="title-slide slide level1 center">
+<h1>Functions</h1>
+
+</section>
+<section id="functions-make-things-happen-in-r" class="slide level2">
+<h2>Functions make things happen in R</h2>
+<ul>
+<li>Functions have arguments and always return something</li>
+<li>Operators such as <code>+</code>, <code>*</code>, and even <code>&lt;-</code> are functions</li>
+</ul>
+</section>
+<section id="why-write-our-own-functions" class="slide level2">
+<h2>Why write our own functions</h2>
+<ul>
+<li><p>Avoids repetition</p></li>
+<li><p>Brevity</p></li>
+<li><p>Less room for errors</p></li>
+<li><p>Take advantage of tools that help us apply functions to many things at once</p></li>
+</ul>
+</section>
+<section id="functions-1" class="slide level2">
+<h2>Functions</h2>
+
+<img data-src="imgs/r-function-syntax.png" class="r-stretch"></section>
+<section id="function-definition" class="slide level2">
+<h2>Function Definition</h2>
+<p>The ‘<code>function()</code>’ function</p>
+<p><code style="font-size: 1.5em; text-align: center; font-family: monospace; font-weight: bold">function( arglist ) expr</code></p>
+<p><br></p>
+<p><strong>arguments</strong> (<code>arglist</code>): values passed to the function</p>
+<p><strong>expression</strong> <code>(expr)</code>: an object that represents an action that can be performed by R.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Expressions contain one or more statements</p>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-a-function" class="slide level2">
+<h2>Defining a function</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>my_custom_function <span class="ot">&lt;-</span> <span class="cf">function</span>(my_arg){</span>
+<span id="cb16-2"><a></a>  my_arg<span class="sc">+</span><span class="dv">1</span> <span class="co"># statement</span></span>
+<span id="cb16-3"><a></a>}</span>
+<span id="cb16-4"><a></a></span>
+<span id="cb16-5"><a></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)</span>
+<span id="cb16-6"><a></a></span>
+<span id="cb16-7"><a></a><span class="fu">my_custom_function</span>(<span class="at">my_arg =</span> my_vector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4 6 7 8</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-3" class="slide level2">
+<h2></h2>
+<p>The body of the function –the statements that are executed when it runs– is grouped with curly braces (<code>{}</code>)</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a>myfun <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb18-2"><a></a>  x <span class="sc">+</span> <span class="dv">4</span> <span class="co"># statement</span></span>
+<span id="cb18-3"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="fu">mean</span>(x)<span class="sc">/</span><span class="dv">2</span>}   </span>
+<span id="cb19-2"><a></a><span class="fu">f</span>(<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">43</span>,<span class="dv">12</span>,<span class="dv">5</span>,<span class="dv">7</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.3</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="function-with-two-statements" class="slide level2">
+<h2>Function with two statements</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb21-2"><a></a>  y <span class="ot">&lt;-</span> (x<span class="sc">*</span><span class="fl">0.2885</span>) <span class="co"># this is a statement</span></span>
+<span id="cb21-3"><a></a>  <span class="fu">log</span>(y)          <span class="co"># this is another statement</span></span>
+<span id="cb21-4"><a></a>}</span>
+<span id="cb21-5"><a></a></span>
+<span id="cb21-6"><a></a><span class="fu">f</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3663777</code></pre>
+</div>
+</div>
+</div>
+<div class="rightref">
+<div class="refbox">
+<p>Jenny Bryan - Stat545<br>
+<a href="https://stat545.com/functions-part1.html">Write your own R functions</a></p>
+</div>
+</div>
+</section>
+<section id="anonymous-functions" class="slide level2">
+<h2>Anonymous functions</h2>
+<p><strong>Functions on the go</strong> (created and used but never given a name)</p>
+<h3 id="anonymous-function-syntax">Anonymous function syntax</h3>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>(<span class="cf">function</span>(x) x <span class="sc">*</span> x <span class="sc">+</span> <span class="dv">3</span>)(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 103</code></pre>
+</div>
+</div>
+</div>
+<blockquote>
+<p>we use parentheses to separate function and arguments</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>(<span class="cf">function</span>(x) x <span class="sc">+</span> <span class="dv">3</span>)(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Behaves exactly the same as</p>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {x <span class="sc">+</span> <span class="dv">3</span>}</span>
+<span id="cb26-2"><a></a><span class="fu">f</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="shorthand-notation-since-r-v4.1.0" class="slide level2">
+<h2>Shorthand notation (since R v4.1.0)</h2>
+<p>Replaces “<code>function(x) {}</code>” with “<code>\(x){}</code>”</p>
+<div class="big-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>(\(x) x <span class="sc">+</span> <span class="dv">3</span>)(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a>(\(x) x <span class="sc">/</span> <span class="dv">2</span>)(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+</div>
+<div class="rightref">
+<div class="refbox">
+<p>Russ Hyde (2021)<br>
+<a href="https://www.jumpingrivers.com/blog/new-features-r410-pipe-anonymous-functions/">New features in R 4.1.0</a></p>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><code>tidyverse</code> devlopers and R users in general are gradually shifting to this notation</p>
+</div>
+</div>
+</div>
+</section>
+<section id="anonymous-functions-1" class="slide level2">
+<h2>Anonymous functions</h2>
+<ul>
+<li><p>Handy when we want to apply a user-defined operation to many things at once</p></li>
+<li><p>Also known as <em>lambda expressions</em></p></li>
+<li><p>Self-contained</p></li>
+<li><p>Comparable with similar approaches in Python</p></li>
+</ul>
+</section>
+<section id="across-and-anonymous-fns" class="slide level2">
+<h2><code>across()</code> and anonymous fns</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a>starwars <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(height,mass),\(x) x<span class="sc">/</span><span class="dv">7</span><span class="sc">+</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 87 × 14
+   name     height  mass hair_color skin_color eye_color birth_year sex   gender
+   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+ 1 Luke Sk…   26.6 13    blond      fair       blue            19   male  mascu…
+ 2 C-3PO      25.9 12.7  &lt;NA&gt;       gold       yellow         112   none  mascu…
+ 3 R2-D2      15.7  6.57 &lt;NA&gt;       white, bl… red             33   none  mascu…
+ 4 Darth V…   30.9 21.4  none       white      yellow          41.9 male  mascu…
+ 5 Leia Or…   23.4  9    brown      light      brown           19   fema… femin…
+ 6 Owen La…   27.4 19.1  brown, gr… light      blue            52   male  mascu…
+ 7 Beru Wh…   25.6 12.7  brown      light      blue            47   fema… femin…
+ 8 R5-D4      15.9  6.57 &lt;NA&gt;       white, red red             NA   none  mascu…
+ 9 Biggs D…   28.1 14    black      light      brown           24   male  mascu…
+10 Obi-Wan…   28   13    auburn, w… fair       blue-gray       57   male  mascu…
+# ℹ 77 more rows
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="lists" class="title-slide slide level1 center">
+<h1>Lists</h1>
+
+</section>
+<section id="lists-1" class="slide level2">
+<h2>Lists</h2>
+<p>Objects which contain elements of different types, such as numbers, strings, vectors, data frames, or even other lists</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb33-2"><a></a>  <span class="at">a_number =</span> <span class="dv">7</span>,</span>
+<span id="cb33-3"><a></a>  <span class="at">a_vector =</span> <span class="fu">c</span>(<span class="st">"mouse"</span>, <span class="st">"cat"</span>, <span class="st">"dog"</span>),</span>
+<span id="cb33-4"><a></a>  <span class="at">a_dataframe =</span> <span class="fu">data.frame</span>(</span>
+<span id="cb33-5"><a></a>    <span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"K"</span>, <span class="st">"L"</span>, <span class="st">"M"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="rightref">
+<div class="refbox">
+<p>Rebecca Barter (2019)<br>
+<a href="https://www.rebeccabarter.com/blog/2019-08-19_purrr/">Learn to purrr</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>my_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$a_number
+[1] 7
+
+$a_vector
+[1] "mouse" "cat"   "dog"  
+
+$a_dataframe
+  a b
+1 1 K
+2 2 L
+3 3 M</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-6" class="slide level2">
+<h2></h2>
+<p>We can also create lists by splitting other objects</p>
+<p>Group and split with <code>dplyr</code> into a list of data frames, one for each group</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>guilds <span class="ot">&lt;-</span> </span>
+<span id="cb36-2"><a></a>  msleep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(vore) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a></a>  <span class="fu">group_split</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-7" class="slide level2">
+<h2></h2>
+<p><code>group_keys()</code> retrieves the grouping data</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>msleep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(vore) <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a></a>  <span class="fu">group_keys</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 1
+  vore   
+  &lt;chr&gt;  
+1 carni  
+2 herbi  
+3 insecti
+4 omni   
+5 &lt;NA&gt;   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="list-indexing" class="slide level2">
+<h2>List indexing</h2>
+
+<img data-src="imgs/listspepper.png" style="width:76.0%" class="r-stretch"></section>
+<section id="working-with-list-elements" class="slide level2">
+<h2>Working with list elements</h2>
+<p>First element in our list (<code>[[1]]</code>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>guilds[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a></a>  <span class="fu">select</span>(name,genus) <span class="sc">%&gt;%</span> head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  name                 genus        
+  &lt;chr&gt;                &lt;chr&gt;        
+1 Cheetah              Acinonyx     
+2 Northern fur seal    Callorhinus  
+3 Dog                  Canis        
+4 Long-nosed armadillo Dasypus      
+5 Domestic cat         Felis        
+6 Pilot whale          Globicephalus</code></pre>
+</div>
+</div>
+</section>
+<section id="second-element" class="slide level2">
+<h2>Second element</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>guilds[[<span class="dv">2</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a></a>  <span class="fu">select</span>(name,genus, vore, conservation) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-3"><a></a>  head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  name             genus      vore  conservation
+  &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;       
+1 Mountain beaver  Aplodontia herbi nt          
+2 Cow              Bos        herbi domesticated
+3 Three-toed sloth Bradypus   herbi &lt;NA&gt;        
+4 Roe deer         Capreolus  herbi lc          
+5 Goat             Capri      herbi lc          
+6 Guinea pig       Cavis      herbi domesticated</code></pre>
+</div>
+</div>
+</section>
+<section id="section-8" class="slide level2">
+<h2></h2>
+
+<img data-src="imgs/purrrPost.png" class="r-stretch"><div style="text-align: right">
+<p>Luis (2017)<br>
+<a href="https://luisdva.github.io/rstats/export-iteratively/">Export Iteratively</a></p>
+</div>
+</section>
+<section id="why-lists" class="slide level2">
+<h2>Why lists?</h2>
+<ul>
+<li><p>Flexible, can store many kinds of objects</p></li>
+<li><p>We can easily create lists by splitting existing objects</p></li>
+<li><p>List elements can be named</p></li>
+</ul>
+</section>
+<section id="for-efficient-iteration" class="slide level2">
+<h2>For efficient iteration</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<p><img data-src="imgs/purrr.jpeg"></p>
+</div><div class="column" style="width:70%;">
+<p>📦 <strong><code>purrr</code></strong> - Functional programming tools</p>
+<ul>
+<li>map functions to data<br>
+</li>
+<li>work efficiently with <strong>lists</strong></li>
+<li>readable code</li>
+</ul>
+</div></div>
+<div class="rightref">
+<div class="refbox">
+<p>Thomas Mock (2018)<br>
+<a href="https://towardsdatascience.com/functional-programming-in-r-with-purrr-469e597d0229">Functional Programming in R with purrr</a></p>
+</div>
+</div>
+</section>
+<section id="section-9" class="slide level2">
+<h2></h2>
+<div style="text-align: center">
+<p><span style="color:blue; font-family: monospace; font-weight: bold">map(</span><span style="color: red; font-family: Liberation Mono; font-weight: bold">.x</span>, <span style="color: green; font-family: Liberation Mono; font-weight: bold">.f</span><span style="color:blue; font-family: Liberation Mono; font-weight: bold">, …)</span></p>
+<p>for every element of <span style="color: red; font-family: Liberation Mono; font-weight: bold">.x</span></p>
+<p>apply <span style="color: green; font-family: Liberation Mono; font-weight: bold">.f</span></p>
+<p><code>...</code> arguments for <span style="color: green; font-family: Liberation Mono; font-weight: bold">.f</span></p>
+</div>
+</section>
+<section id="mapping-functions-to-data" class="slide level2">
+<h2>Mapping functions to data</h2>
+<p><code>map(.x,</code><span style="color: green; font-family: monospace; font-weight: bold">.f</span><code>)</code></p>
+<p>We can specify <span style="color: green; font-family: monospace; font-weight: bold">.f</span> as:</p>
+<ul>
+<li class="fragment"><p>an existing function</p></li>
+<li class="fragment"><p>an anonymous function</p></li>
+</ul>
+</section>
+<section id="mapping-functions-to-data-1" class="slide level2">
+<h2>Mapping functions to data</h2>
+<ul>
+<li><p>Apply functions to many things at once</p></li>
+<li><p>Reading many files at once</p></li>
+<li><p>Modifying and exporting multiple objects</p></li>
+</ul>
+</section>
+<section id="apply-functions-to-many-things-at-once" class="slide level2">
+<h2>Apply functions to many things at once</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb43-2"><a></a><span class="fu">library</span>(purrr)</span>
+<span id="cb43-3"><a></a><span class="co"># numeric vectors</span></span>
+<span id="cb43-4"><a></a>mass <span class="ot">&lt;-</span> penguins<span class="sc">$</span>body_mass_g</span>
+<span id="cb43-5"><a></a>bill <span class="ot">&lt;-</span> penguins<span class="sc">$</span>bill_length_mm</span>
+<span id="cb43-6"><a></a>flipper <span class="ot">&lt;-</span> penguins<span class="sc">$</span>flipper_length_mm</span>
+<span id="cb43-7"><a></a><span class="co"># together in a list</span></span>
+<span id="cb43-8"><a></a>traits <span class="ot">&lt;-</span> <span class="fu">list</span>(mass, bill , flipper)</span>
+<span id="cb43-9"><a></a><span class="co"># apply "mean" to each list element</span></span>
+<span id="cb43-10"><a></a><span class="fu">map</span>(traits,mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] NA
+
+[[2]]
+[1] NA
+
+[[3]]
+[1] NA</code></pre>
+</div>
+</div>
+</section>
+<section id="section-10" class="slide level2">
+<h2></h2>
+<h3 id="additional-arguments">additional arguments</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a><span class="co"># "mean" of each list element</span></span>
+<span id="cb45-2"><a></a><span class="fu">map</span>(traits,mean,<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 4201.754
+
+[[2]]
+[1] 43.92193
+
+[[3]]
+[1] 200.9152</code></pre>
+</div>
+</div>
+</section>
+<section id="apply-custom-functions" class="slide level2">
+<h2>Apply custom functions</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a><span class="co"># min, max, and range</span></span>
+<span id="cb47-2"><a></a>MMR <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb47-3"><a></a>  min_x <span class="ot">&lt;-</span> <span class="fu">min</span>(x,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb47-4"><a></a>  max_x <span class="ot">&lt;-</span> <span class="fu">max</span>(x,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb47-5"><a></a>  maxmin <span class="ot">&lt;-</span> max_x <span class="sc">-</span> min_x</span>
+<span id="cb47-6"><a></a>  <span class="fu">c</span>(min_x, max_x, maxmin)</span>
+<span id="cb47-7"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="try-out-with-vectors" class="slide level2">
+<h2>Try out with vectors</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="fu">MMR</span>(mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2700 6300 3600</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="fu">MMR</span>(flipper)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 172 231  59</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="map-our-function-to-a-list" class="slide level2">
+<h2><code>map()</code> our function to a list</h2>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a><span class="fu">map</span>(<span class="at">.x =</span> traits, <span class="at">.f =</span> MMR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 2700 6300 3600
+
+[[2]]
+[1] 32.1 59.6 27.5
+
+[[3]]
+[1] 172 231  59</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="map-with-anonymous-functions" class="slide level2">
+<h2><code>map()</code> with anonymous functions</h2>
+<p>Same behavior</p>
+<div class="med-code">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a></a>list_of_numbers <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">10</span>),<span class="fu">c</span>(<span class="dv">20</span><span class="sc">:</span><span class="dv">27</span>))</span>
+<span id="cb54-2"><a></a><span class="co"># anonymous fn</span></span>
+<span id="cb54-3"><a></a><span class="fu">map</span>(list_of_numbers, <span class="cf">function</span>(x) x<span class="sc">+</span><span class="dv">2</span>)</span>
+<span id="cb54-4"><a></a></span>
+<span id="cb54-5"><a></a><span class="co"># shorthand notation</span></span>
+<span id="cb54-6"><a></a><span class="fu">map</span>(list_of_numbers,\(x) x<span class="sc">+</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="rightref">
+<div class="refbox">
+<p>Mike Cheng (2019)<br>
+<a href="https://coolbutuseless.github.io/2019/03/13/anonymous-functions-in-r-part-1/">Anonymous Functions in R - Part 1</a></p>
+</div>
+</div>
+</section></section>
+<section id="done" class="title-slide slide level1 center">
+<h1>Done!</h1>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: true,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
