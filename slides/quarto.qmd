@@ -222,14 +222,6 @@ Add from a local path or from the web
 
 ![](imgs/Mila.jpeg)
 
-# Images
-
-Label, resize, align  
-
-`![Mila the dog](imgs/Mila.jpeg){width="30%" fig-align="right"}`
-
-![Mila the dog](imgs/Mila.jpeg){width="30%" fig-align="right"}
-
 ## Code
 
 #### Code chunks
@@ -264,9 +256,7 @@ Contains document metadata to specify:
 
 -   Output format
 
--   `---` befor and after the preamble
-
--   Flimsy, be careful with indentations here
+-   `---` before and after the preamble
 
 ## Example 1: Possums report {background-color="black"}
 

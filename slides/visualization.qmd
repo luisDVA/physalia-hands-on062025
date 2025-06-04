@@ -683,15 +683,6 @@ cal_sodium_plt+rest_sodium_plt+sleepy+
 ```
 :::
 
-##
-
-Nested but note the `|`
-
-:::{.med-code}
-```{r}
-(cal_sodium_plt/rest_sodium_plt)|sleepy
-```
-:::
 
 ## Annotations
 

@@ -79,6 +79,9 @@ library(ggplot2)
 [Ctrl == ⌘ Command , Alt == ⌥ Option]{style="font-size: 1.3em; text-align: center"}
 
 - Multiline cursor (`ctrl`+`alt`+`up`) or (`ctrl`+`alt`+`down`)
+
+<br/>
+
 - dismiss with `escape` key
 
 ## Shortcuts
@@ -94,27 +97,6 @@ library(ggplot2)
 [RStudio Shortcuts and Tips (2021)](https://appsilon.com/rstudio-shortcuts-and-tips/)
 :::
 :::
-
-## More shortcuts
-
--   Shift focus
-    -   (`ctrl`+`1` through `8`)
-    -   Maximize panes (`ctrl`+`shift`+`1` through `8`)
-
-![](imgs/movingfocus.gif){width="48%"}
-
-## 
-
-
-See help [?]{style="color: orange"} o [F1]{style="color: orange"}
-
-Open object in viewer
-
-[`ctrl` + click]{style="color: orange"}
-
-### Open working directory 
-[`shell.exec(getwd())`]{style="color: orange"} Windows  [`browseURL(getwd())`]{style="color: orange"} Linux
-
 
 # Iteration 
 
@@ -157,11 +139,10 @@ Hadley Wickham (2011)\
 :::
 ::::
 
-## `dplyr::group_by()`
+## `group_by()` from `dplyr`
 
 -   Define groups with one or more variables\
 -   Stratify a data frame
--   equivalent to `aggregate()` in base R
 
 ![image by Ruben Sanchez](imgs/groupby.PNG){width="64%"}\
 
@@ -204,7 +185,7 @@ msleep %>% head %>% gt() %>%
 ```
 
 
-## maximum `brainwt` for each order
+## n for each order
 
 
 ```{r}
@@ -213,7 +194,7 @@ msleep %>% head %>% gt() %>%
 #| output-location: fragment
 
 msleep %>% group_by(order) %>% 
-  slice_max(brainwt,n=1)
+  count()
 ```
 
 
@@ -240,16 +221,6 @@ msleep %>% group_by(order) %>%
             mean_brainwt=mean(brainwt))
 ```
 :::
-
-## New notation
-
-Eliminate the need for `group_by()` and then `ungroup()` with `by`
-
-
-```{r}
-msleep %>% slice_sample(n=1,by=order)
-```
-
 
 ## Loops (_for loops_)
 
@@ -482,94 +453,6 @@ Jenny Bryan - Stat545\
 :::
 :::
 
-## Anonymous functions
-
-**Functions on the go** (created and used but never given a name)
-
-### Anonymous function syntax
-
-:::{.big-code}
-```{r}
-#| echo: true
-#| eval: true
-(function(x) x * x + 3)(10)
-```
-:::
-
-> we use parentheses to separate function and arguments
-
-
-
-------------------------------------------------------------------------
-
-:::{.big-code}
-```{r}
-#| eval: false
-#| echo: true
-
-(function(x) x + 3)(10)
-```
-:::
-
-Behaves exactly the same as
-
-:::{.big-code}
-```{r}
-#| eval: false
-#| echo: true
-
-f <- function(x) {x + 3}
-f(10)
-
-```
-:::
-
-## Shorthand notation (since R v4.1.0)
-
-Replaces "`function(x) {}`" with "`\(x){}`"
-
-:::{.big-code}
-```{r}
-#| eval: true
-#| echo: true
-
-(\(x) x + 3)(10)
-
-(\(x) x / 2)(10)
-```
-:::
-
-
-::::{.rightref}
-:::{.refbox}
-Russ Hyde (2021)\
-[New features in R 4.1.0](https://www.jumpingrivers.com/blog/new-features-r410-pipe-anonymous-functions/)
-:::
-:::
-
-:::{.callout-note}
-## 
-`tidyverse` devlopers and R users in general are gradually shifting to this notation
-:::
-
-
-## Anonymous functions
-
--   Handy when we want to apply a user-defined operation to many things at once
-
--   Also known as *lambda expressions*
-
--   Self-contained
-
--   Comparable with similar approaches in Python
-
-## `across()` and anonymous fns
-
-```{r}
-starwars %>%
-  mutate(across(c(height,mass),\(x) x/7+2))
-```
-
 
 # Lists
 
@@ -621,17 +504,6 @@ guilds <-
 ```
 
 
-## 
-
-`group_keys()` retrieves the grouping data
-
-:::{.med-code}
-```{r}
-msleep %>% group_by(vore) %>%
-  group_keys()
-```
-:::
-
 ## List indexing
 
 ![](imgs/listspepper.png){width="76%"}
@@ -644,22 +516,20 @@ First element in our list (`[[1]]`)
 #| eval: true
 #| echo: true
  
-guilds[[1]] %>% 
-  select(name,genus) %>% head
+guilds[[1]] 
 
 ```
 
 
 ## Second element
 
+Note the different outputs
 ```{r}
 #| eval: true
 #| echo: true
 
-guilds[[2]] %>% 
-  select(name,genus, vore, conservation) %>% 
-  head
-
+my_list[[2]]
+my_list[2]
 ```
 
 ##
@@ -717,22 +587,6 @@ apply [.f]{style="color: green; font-family: Liberation Mono; font-weight: bold"
 
 ## Mapping functions to data
 
-`map(.x,`[.f]{style="color: green; font-family: monospace; font-weight: bold"}`)`
-
-We can specify [.f]{style="color: green; font-family: monospace; font-weight: bold"} as:
-
-:::{.incremental}
-
--   an existing function
-
--   an anonymous function
-
-:::
-
-
-
-## Mapping functions to data
-
 -   Apply functions to many things at once
 
 -   Reading many files at once
@@ -747,8 +601,9 @@ We can specify [.f]{style="color: green; font-family: monospace; font-weight: bo
 
 library(palmerpenguins)
 library(purrr)
+penguins <- na.omit(penguins)
 # numeric vectors
-mass <- penguins$body_mass_g
+mass <- penguins$body_mass_g # dollar sign extracts a vector from a table
 bill <- penguins$bill_length_mm
 flipper <- penguins$flipper_length_mm
 # together in a list
@@ -757,14 +612,6 @@ traits <- list(mass, bill , flipper)
 map(traits,mean)
 ```
 
-## 
-
-### additional arguments
-
-```{r}
-# "mean" of each list element
-map(traits,mean,na.rm=TRUE)
-```
 
 ## Apply custom functions 
 
@@ -799,32 +646,6 @@ MMR(flipper)
 map(.x = traits, .f = MMR)
 ```
 :::
-
-## `map()` with anonymous functions
-
-Same behavior
-
-:::{.med-code}
-```{r}
-#| eval: false
-#| echo: true
-
-list_of_numbers <- list(c(5:10),c(20:27))
-# anonymous fn
-map(list_of_numbers, function(x) x+2)
-
-# shorthand notation
-map(list_of_numbers,\(x) x+2)
-```
-:::
-
-::::{.rightref}
-:::{.refbox}
-Mike Cheng (2019)\
-[Anonymous Functions in R - Part 1](https://coolbutuseless.github.io/2019/03/13/anonymous-functions-in-r-part-1/)
-:::
-:::
-
 
 # Done!
 
