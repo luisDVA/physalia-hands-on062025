@@ -1,8 +1,7 @@
 ---
 title: "Possum measurements report"
 author: "Your Name Here"
-format: 
-  html:
+format: html
 highlight-style: dracula
 ---
 
